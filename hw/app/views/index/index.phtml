@@ -1,33 +1,51 @@
-<?php
-
-echo "<h1>Приветище!!!</h1>";
-
-echo $this->tag->linkTo(["signup", "Sign Up Here!", 'class' => 'btn btn-primary']);
-
-if ($users->count() > 0) {
-    ?>
-    <table class="table table-bordered table-hover">
-        <thead class="thead-light">
-        <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>Email</th>
-        </tr>
-        </thead>
-        <tfoot>
-        <tr>
-            <td colspan="3">Users quantity: <?php echo $users->count(); ?></td>
-        </tr>
-        </tfoot>
-        <tbody>
-        <?php foreach ($users as $user) { ?>
-            <tr>
-                <td><?php echo $user->id; ?></td>
-                <td><?php echo $user->name; ?></td>
-                <td><?php echo $user->email; ?></td>
-            </tr>
-        <?php } ?>
-        </tbody>
-    </table>
-    <?php
-}
+<section class="section " >
+    <h1 class="title is-primary">Section</h1>
+    <h2 class="subtitle">
+        A simple container to divide your page into <strong>sections</strong>, like the one you're currently reading.
+    </h2>
+    <div class="tile is-ancestor">
+        <div class="tile is-vertical is-8">
+            <div class="tile">
+                <div class="tile is-parent is-vertical">
+                    <article class="tile is-child notification ">
+                        <p class="title">Vertical...</p>
+                        <p class="subtitle">Top tile</p>
+                    </article>
+                    <article class="tile is-child notification is-warning">
+                        <p class="title">...tiles</p>
+                        <p class="subtitle">Bottom tile</p>
+                    </article>
+                </div>
+                <div class="tile is-parent">
+                    <article class="tile is-child notification is-info">
+                        <p class="title">Middle tile</p>
+                        <p class="subtitle">With an image</p>
+                        <figure class="image is-4by3">
+                            <img src="https://bulma.io/images/placeholders/640x480.png">
+                        </figure>
+                    </article>
+                </div>
+            </div>
+            <div class="tile is-parent">
+                <article class="tile is-child notification is-danger">
+                    <p class="title">Wide tile</p>
+                    <p class="subtitle">Aligned with the right tile</p>
+                    <div class="content">
+                        <!-- Content -->
+                    </div>
+                </article>
+            </div>
+        </div>
+        <div class="tile is-parent">
+            <article class="tile is-child notification is-success">
+                <div class="content">
+                    <p class="title">Tall tile</p>
+                    <p class="subtitle">With even more content</p>
+                    <div class="content">
+                        <!-- Content -->1111111111111
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>
