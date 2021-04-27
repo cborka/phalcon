@@ -22,3 +22,9 @@
             white 100%);
     background-size: 40px 40px;
 }
+
+.red { color: red;}
+.green { color: green;}
+.cyan { color: cyan;}
+.errorMessage { color: cyan;}
+.magenta { color: magenta;}
