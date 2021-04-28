@@ -28,4 +28,20 @@ class UsersController extends Controller
 //        $flash->message('error', 'Error message');
     }
 
+    /**
+     * Test forms
+     */
+    public function formAction()
+    {
+
+    }
+
+    /**
+     * Test forms
+     */
+    public function loginAction()
+    {
+
+    }
+
 }

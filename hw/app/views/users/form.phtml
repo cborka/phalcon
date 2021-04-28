@@ -1,0 +1,83 @@
+<?php
+
+use Phalcon\Forms\Form;
+use Phalcon\Forms\Element\Text;
+use Phalcon\Forms\Element\Select;
+
+$form = new Form();
+
+$form->add(
+    new Text(
+        'nameLast',
+        [
+            'maxlength'   => 30,
+            'placeholder' => 'Last Name',
+        ]
+    )
+);
+
+$form->add(
+    new Text(
+        'nameFirst'
+    )
+);
+
+$form->add(
+    new Select(
+        'phoneType',
+        [
+            1 => 'Home',
+            2 => 'Work',
+            3 => 'Mobile',
+        ]
+    )
+);
+?>
+
+<div class="block">
+
+<h1 class="h1">
+    Contacts
+</h1>
+
+<form method='post'>
+
+    <p>
+        <label>
+            Last Name
+        </label>
+
+        <?php echo $form->render('nameLast'); ?>
+    </p>
+
+    <p>
+        <label>
+            First Name
+        </label>
+
+        <?php
+        echo $form->render(
+            'nameFirst',
+            [
+                'maxlength'   => 30,
+                'placeholder' => 'First Name',
+            ]
+        ); ?>
+    </p>
+
+    <p>
+        <label>
+            phoneType
+        </label>
+
+        <?php echo $form->render('phoneType'); ?>
+    </p>
+
+    <p>
+        <input type='submit' value='Save' />
+    </p>
+
+
+</form>
+
+</div>

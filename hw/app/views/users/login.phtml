@@ -1,0 +1,37 @@
+<?php echo "qwerty"; ?>
+
+<h1>
+    Contacts
+</h1>
+
+<form method='post'>
+
+    <p>
+        <label>
+            Last Name
+        </label>
+
+        <?php echo $form->render('nameLast'); ?>
+    </p>
+
+    <p>
+        <label>
+            First Name
+        </label>
+
+        <?php echo $form->render('nameFirst'); ?>
+    </p>
+
+    <p>
+        <label>
+            Gender
+        </label>
+
+        <?php echo $form->render('phoneType'); ?>
+    </p>
+
+    <p>
+        <input type='submit' value='Save' />
+    </p>
+
+</form>
