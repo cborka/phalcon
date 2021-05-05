@@ -4,12 +4,32 @@ declare(strict_types=1);
 use Phalcon\Di\FactoryDefault;
 use Phalcon\Mvc\Model;
 
+use Phalcon\Escaper;
+use Phalcon\Flash\Direct;
+
 error_reporting(E_ALL);
 
 define('BASE_PATH', dirname(__DIR__));
 define('APP_PATH', BASE_PATH . '/app');
 
 try {
+
+    /**
+     * Set Bulma classes
+     */
+    $escaper = new Escaper();
+    $flash   = new Direct($escaper);
+    $flash->getCssClasses();
+
+    $cssClasses = [
+        'error'   => 'notification is-danger is-light',
+        'success' => 'notification is-success is-light',
+        'notice'  => 'notification is-notice is-light',
+        'warning' => 'notification is-warning is-light',
+    ];
+    $flash->setCssClasses($cssClasses);
+
+
     /**
      * The FactoryDefault Dependency Injector automatically registers
      * the services that provide a full stack framework.
@@ -35,6 +55,7 @@ try {
      * Include Autoloader
      */
     include APP_PATH . '/config/loader.php';
+
 
     /**
      * Handle the request
