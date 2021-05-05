@@ -26,9 +26,9 @@ $form->add(
     new Select(
         'phoneType',
         [
-            1 => 'Home',
-            2 => 'Work',
-            3 => 'Mobile',
+            1 => 'Домашний',
+            2 => 'Рабочий',
+            3 => 'Мобильный',
         ]
     )
 );
@@ -39,14 +39,14 @@ $form->add(
 <div class="block">
 
 <h1 class="h1">
-    Contacts
+    Регистрация
 </h1>
 
 <form method='post'>
 
     <p>
         <label>
-            Last Name
+            Логин
         </label>
 
         <?php echo $form->render('nameLast'); ?>
@@ -54,7 +54,7 @@ $form->add(
 
     <p>
         <label>
-            First Name
+            Имя
         </label>
 
         <?php
@@ -69,14 +69,14 @@ $form->add(
 
     <p>
         <label>
-            phoneType
+            Тип телефона
         </label>
 
         <?php echo $form->render('phoneType'); ?>
     </p>
 
     <p>
-        <input type='submit' value='Save' />
+        <input type='submit' value='Регистрация' />
     </p>
 
 

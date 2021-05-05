@@ -9,7 +9,7 @@ use Phalcon\Flash\Direct;
 
 error_reporting(E_ALL);
 
-define('BASE_PATH', dirname(__DIR__));
+define('BASE_PATH', dirname(__DIR__)); // dirname(каталог) - это как каталог/..
 define('APP_PATH', BASE_PATH . '/app');
 
 try {

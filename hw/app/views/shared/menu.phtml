@@ -45,13 +45,17 @@
             <div class="navbar-item">
                 <div class="buttons">
                     <a class="button is-link is-outlined" onclick="function f() {
-                        document.location.href = '/users/form';   // В той же вкладке
+                        document.location.href = '/users/login';   // В той же вкладке
 //                         window.open('/users/form','_self',false);
 //                         window.open('/users/form');  // В новой вкладке
                     }; f();">
                         Вход
                     </a>
-                    <a class="button is-primary is-outlined">
+                    <a class="button is-primary is-outlined" onclick="function f() {
+                        document.location.href = '/users/form';   // В той же вкладке
+//                         window.open('/users/form','_self',false);
+//                         window.open('/users/form');  // В новой вкладке
+                    }; f();">
                         Регистрация
                     </a>
                 </div>

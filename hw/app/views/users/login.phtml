@@ -1,37 +1,46 @@
-<?php echo "qwerty"; ?>
+<?php
 
-<h1>
-    Contacts
-</h1>
+use Phalcon\Forms\Form;
+use Phalcon\Forms\Element\Text;
+use Phalcon\Forms\Element\Select;
 
-<form method='post'>
+$form = new Form();
 
-    <p>
-        <label>
-            Last Name
-        </label>
+$form->add(
+    new Text(
+        'nameLast',
+        [
+            'maxlength'   => 30,
+            'placeholder' => 'Last Name',
+        ]
+    )
+);
 
-        <?php echo $form->render('nameLast'); ?>
-    </p>
 
-    <p>
-        <label>
-            First Name
-        </label>
+?>
 
-        <?php echo $form->render('nameFirst'); ?>
-    </p>
+<div class="block">
 
-    <p>
-        <label>
-            Gender
-        </label>
+    <h1 class="h1">
+        Вход
+    </h1>
 
-        <?php echo $form->render('phoneType'); ?>
-    </p>
+    <form method='post'>
 
-    <p>
-        <input type='submit' value='Save' />
-    </p>
+        <p>
+            <label>
+                Last Name
+            </label>
 
-</form>
+            <?php echo $form->render('nameLast'); ?>
+        </p>
+
+
+        <p>
+            <input type='submit' value='Вход' />
+        </p>
+
+
+    </form>
+
+</div>
