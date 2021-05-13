@@ -36,7 +36,7 @@ try {
      */
     $di = new FactoryDefault();
 
-    /**
+     /**
      * Read services
      */
     include APP_PATH . '/config/services.php';
@@ -56,6 +56,8 @@ try {
      */
     include APP_PATH . '/config/loader.php';
 
+//    $url = $di->getUrl();
+//    echo 'di->getUrl() = '. $url->getBaseUri();
 
     /**
      * Handle the request
