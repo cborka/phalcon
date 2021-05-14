@@ -91,17 +91,23 @@ $di->setShared('modelsMetadata', function () {
 });
 
 /**
- * Register the session flash service with the Twitter Bootstrap classes
+ * Register the session flash service with the
  */
 $di->set('flash', function () {
     $escaper = new Escaper();
     $flash = new Flash($escaper);
     $flash->setImplicitFlush(false);
     $flash->setCssClasses([
-        'error'   => 'alert alert-danger',
-        'success' => 'alert alert-success',
-        'notice'  => 'alert alert-info',
-        'warning' => 'alert alert-warning'
+        // Set Bulma classes
+        'error'   => 'notification is-danger is-light',
+        'success' => 'notification is-success is-light',
+        'notice'  => 'notification is-notice is-light',
+        'warning' => 'notification is-warning is-light'
+        // Twitter Bootstrap classes
+//        'error'   => 'alert alert-danger',
+//        'success' => 'alert alert-success',
+//        'notice'  => 'alert alert-info',
+//        'warning' => 'alert alert-warning'
     ]);
 
     return $flash;

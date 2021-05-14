@@ -15,28 +15,12 @@ define('APP_PATH', BASE_PATH . '/app');
 try {
 
     /**
-     * Set Bulma classes
-     */
-    $escaper = new Escaper();
-    $flash   = new Direct($escaper);
-    $flash->getCssClasses();
-
-    $cssClasses = [
-        'error'   => 'notification is-danger is-light',
-        'success' => 'notification is-success is-light',
-        'notice'  => 'notification is-notice is-light',
-        'warning' => 'notification is-warning is-light',
-    ];
-    $flash->setCssClasses($cssClasses);
-
-
-    /**
      * The FactoryDefault Dependency Injector automatically registers
      * the services that provide a full stack framework.
      */
     $di = new FactoryDefault();
 
-     /**
+    /**
      * Read services
      */
     include APP_PATH . '/config/services.php';
@@ -56,8 +40,11 @@ try {
      */
     include APP_PATH . '/config/loader.php';
 
+
+
 //    $url = $di->getUrl();
 //    echo 'di->getUrl() = '. $url->getBaseUri();
+
 
     /**
      * Handle the request
