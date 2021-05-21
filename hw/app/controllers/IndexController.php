@@ -17,4 +17,9 @@ class IndexController extends Controller
     {
 //        $this->view->users = Users::find();
     }
+
+    public function vue3Action()
+    {
+//        $this->view->users = Users::find();
+    }
 }
