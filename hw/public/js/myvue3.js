@@ -18,7 +18,7 @@ Vue.createApp(Counter).mount('#counter');
 const Str = {
     data() {
         return {
-            str2: 'qwerty'
+            str2: 'qwertyx'
         }
     }
 };
