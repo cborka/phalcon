@@ -1,26 +1,15 @@
 
-const Counter = {
+const ToDoList = {
     data() {
         return {
-            counter: 0
-        }
-    },
-    mounted() {
-        setInterval(() => {
-            this.counter++
-        }, 60000) // минута
-    }
-};
-
-Vue.createApp(Counter).mount('#counter');
-
-
-const Str = {
-    data() {
-        return {
-            str2: 'qwertyx'
+            todos: [
+                {text: 'One'},
+                {text: 'Two'}
+            ]
         }
     }
 };
 
-Vue.createApp(Str).mount('#string');
+const app = Vue.createApp(ToDoList);
+app.mount('#todo-list');
+
