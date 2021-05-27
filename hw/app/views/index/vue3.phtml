@@ -1,10 +1,16 @@
 
 <div id="todo-list" class="box">
+    <input v-model="newTodo">
+    <button @click="addTodo">Добавить</button>
+    <br>
+    <br>
     Список добрых дел:
     <ol>
-        <li v-for="todo in todos">
-            {{ todo.text }}
-        </li>
+        <todo-item
+            v-for="todo in todoList"
+            v-bind:todo="todo"
+        >
+        </todo-item>
     </ol>
 </div>
 
