@@ -1,14 +1,16 @@
 
-<div id="todo-list" class="box">
-    <input v-model="newTodo">
-    <button @click="addTodo">Добавить</button>
-    <br>
+<div id="todo-list" class="box content">
+    <div  class="control">
+        <input v-model="newTodo" class="input is-primary" type="text" >
+        <button @click="addTodo" class="button is-primary">Добавить</button>
+    </div>
     <br>
     Список добрых дел:
     <ol>
         <todo-item
             v-for="todo in todoList"
             v-bind:todo="todo"
+            v-bind:arr="todoList"
         >
         </todo-item>
     </ol>

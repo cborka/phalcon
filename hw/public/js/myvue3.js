@@ -2,9 +2,9 @@
 
 
 const ToDoList = {
-    data() {
-
-        let list = getTodoList();
+    data()
+    {
+        let list = getTodoListFromDb();
 
         return {
             todoList: list,
@@ -12,23 +12,53 @@ const ToDoList = {
         }
     },
     methods: {
-        addTodo() {
-//            alert(this.newTodo);
-            let id = 7;
+        addTodo()
+        {
+            let id = this.todoList.length + 1;
+//            let id = addTodoToDb(this.newTodo);
 
             this.todoList.push({id: id, text: this.newTodo})
         }
-
     }
 };
 
 const app = Vue.createApp(ToDoList);
 
+// Компонент для вывод одного пункта списка {id: 1, text: 'Раз'}
 app.component(
     'todo-item',
     {
-        props: ['todo'],
-        template: `<li>{{todo.text + ', ' + todo.id}} одно дело</li>`
+        props: ['todo', 'arr'],
+        template:
+            `<li>{{todo.id + ': ' + todo.text}}
+            <button @click="editTodo" class="button is-small is-primary is-light">
+                <span>Изменить</span>
+            </button> 
+            <button @click="deleteTodo" class="button is-small is-danger is-light">
+                <span>Удалить</span>
+            </button> 
+            </li>`,
+        methods: {
+            deleteTodo()
+            {
+//                alert(this.todo.id + ': ' + this.todo.text);
+
+                if (deleteTodoFromDb(this.todo.id)) {
+                    let idx = this.arr.findIndex(item => item.id == this.todo.id);
+                    this.arr.splice(idx, 1);
+                }
+            },
+            editTodo()
+            {
+                let result = prompt('Редактирование доброго дела', this.todo.text);
+
+                if (updateTodoInDb(this.todo.id, result)) {
+                    this.todo.text = result;
+                }
+
+//                alert(this.todo.id + ': ' + this.todo.text);
+            }
+        }
     }
 );
 
@@ -38,9 +68,41 @@ app.mount('#todo-list');
 
 //=================================
 
-function getTodoList() {
+//
+// Получает данные из БД
+//
+function getTodoListFromDb()
+{
     return [
         {id: 1, text: 'Раз'},
         {id: 2, text: 'Два'}
     ];
+}
+
+//
+// Добавление новой записи в БД
+//  здесь todo: string
+//
+function addTodoToDb(todo)
+{
+//    alert(todo);
+
+    // Возвращает id добавленной записи
+    return 11;
+}
+
+//
+// Изменить запись
+//
+function updateTodoInDb(id, text)
+{
+    return true;
+}
+
+//
+// Удалить запись из БД
+//
+function deleteTodoFromDb(id)
+{
+    return true;
 }
