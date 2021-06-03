@@ -13,7 +13,7 @@ return new \Phalcon\Config([
         'host'        => '127.0.0.1',
         'username'    => 'bor',
         'password'    => '432',
-        'dbname'      => 'myfs',
+        'dbname'      => 'homework',
         'charset'     => 'utf8',
     ],
     'application' => [
