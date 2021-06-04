@@ -73,6 +73,26 @@ app.mount('#todo-list');
 //
 function getTodoListFromDb()
 {
+
+    axios.headers = {
+        'Cache-Control': 'no-cache',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+    };
+
+    let dt = new Date();
+    let t = dt.toISOString();
+
+    $("#ab1").text(t);
+
+     axios.get('/todo/find').then(res => {
+// //        $("#abzac").html(res.data).show(); // Результат ответа от сервера
+// //        $("#abzac").html('<pre>' + JSON.stringify(res, null, 4)+'</pre>').show(); // Результат ответа от сервера
+         $("#abzac").text(JSON.stringify(res, null, 4)).show(); // Результат ответа от сервера
+     });
+
+
+
     return [
         {id: 1, text: 'Раз'},
         {id: 2, text: 'Два'}

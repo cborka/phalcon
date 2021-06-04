@@ -13,4 +13,9 @@ class TodoController extends Controller
         $this->view->todos = MyTodo::find();
 
     }
+
+    public function find2Action()
+    {
+        echo "Эта строка возвращается по запросу.";
+    }
 }
