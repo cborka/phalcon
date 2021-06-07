@@ -14,8 +14,11 @@ class TodoController extends Controller
 
     }
 
-    public function find2Action()
+    public function findAction()
     {
-        echo "Эта строка возвращается по запросу.";
+        $this->view->setContent(
+            "<h1>hello</h1>"
+        );
+//        echo "Эта строка возвращается по запросу.";
     }
 }
