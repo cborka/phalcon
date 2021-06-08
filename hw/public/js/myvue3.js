@@ -88,7 +88,8 @@ function getTodoListFromDb()
      axios.get('/todo/find').then(res => {
 // //        $("#abzac").html(res.data).show(); // Результат ответа от сервера
 // //        $("#abzac").html('<pre>' + JSON.stringify(res, null, 4)+'</pre>').show(); // Результат ответа от сервера
-         $("#abzac").text(JSON.stringify(res, null, 4)).show(); // Результат ответа от сервера
+         $("#abzac").text(JSON.stringify(res.data, null, 4)).show(); // Результат ответа от сервера
+//         $("#abzac").text(res.data, null, 4); // Результат ответа от сервера
      });
 
 
