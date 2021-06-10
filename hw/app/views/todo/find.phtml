@@ -2,8 +2,25 @@
 
 //use MyTodo;
 
+$eol = '<br />';
+//$eol = PHP_EOL;
+
+echo 'Содержимое этого файла отдаётся по запросу аксиос.' . $eol;
+
+
 //$this->view->todos = MyTodo::find();
 
 // var_dump($todos);
-echo 'Lines: ' . $todos->count() . PHP_EOL;
-//echo 'Содержимое этого файла отдаётся по запросу аксиос.';
+echo 'Lines: ' . $todos->count() . $eol;
+
+foreach ($todos as $todo) {
+    echo $todo->id . ', ' . $todo->task . ', ' . $todo->dt . $eol;
+}
+
+echo 'One record: ' . $todo1->id . ', ' . $todo1->task . ', ' . $todo1->dt . $eol;
+
+//echo serialize($todos);
+
+
+
+
