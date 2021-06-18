@@ -82,21 +82,43 @@ function getTodoListFromDb()
 
     let dt = new Date();
     let t = dt.toISOString();
-
-    $("#ab1").text(t);
+    $("#ab1").text(t); // Вывод даты-времени
 
      axios.get('/todo/find').then(res => {
 // //        $("#abzac").html(res.data).show(); // Результат ответа от сервера
 // //        $("#abzac").html('<pre>' + JSON.stringify(res, null, 4)+'</pre>').show(); // Результат ответа от сервера
          $("#abzac").text(JSON.stringify(res.data, null, 4)).show(); // Результат ответа от сервера
 //         $("#abzac").text(res.data, null, 4); // Результат ответа от сервера
+
+         let arr = res.data;
+          $("#abzac2").text(arr[0].task);
+//         $("#abzac2").text('sjdjdjjd');
+         return res.data;
      });
 
 
+    //  let arr = JSON.parse(JSON.stringify(res.data, null, 4));
+    // $("#abzac2").text('sjdjdjjd');
+//     alert(arr[1]);
 
+//     return res.data;
+    //  return JSON.parse(JSON.stringify(res.data, null, 4));
+    // return[
+    //     {
+    //         "id": "1",
+    //         "task": "Делай дело! срочно!",
+    //         "dt": "2021-06-08 10:47:36"
+    //     },
+    //     {
+    //         "id": "2",
+    //         "task": "Пили сайт срочно!",
+    //         "dt": "2021-06-10 10:48:17"
+    //     }
+    // ];
+    //
     return [
-        {id: 1, text: 'Раз'},
-        {id: 2, text: 'Два'}
+        {id: 7, text: 'Раз'},
+        {id: 8, task: 'Два'}
     ];
 }
 
