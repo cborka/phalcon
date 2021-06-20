@@ -1,0 +1,32 @@
+<?php
+
+use MyTodo;
+
+$post =  json_decode(file_get_contents('php://input'), true);
+
+$todo = MyTodo::findFirst(
+    [
+        'conditions' => 'id = :id:',
+        'bind'       => [
+            'id' => $post["id"],
+        ]
+    ]
+);
+
+//$todo->id = $post["id"];
+$todo->task = $post["task"];
+
+$result = $todo->update();
+
+if ($result) {
+    echo json_encode($todo);
+} else {
+
+    echo 'Error: ';
+
+    $messages = $todo->getMessages();
+
+    foreach ($messages as $message) {
+        echo $message . PHP_EOL;
+    }
+}

@@ -1,0 +1,29 @@
+<?php
+
+use MyTodo;
+
+$post =  json_decode(file_get_contents('php://input'), true);
+
+echo $post["id"];
+
+$todo = MyTodo::findFirst(
+    [
+        'conditions' => 'id = :id:',
+        'bind'       => [
+            'id' => $post["id"],
+        ]
+    ]
+);
+
+if($todo) {
+    if($todo->delete()) {
+      echo 'OK';
+    } else{
+        $messages = $todo->getMessages();
+
+        foreach ($messages as $message) {
+            echo $message . PHP_EOL;
+        }
+
+    }
+}

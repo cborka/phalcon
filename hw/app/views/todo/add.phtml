@@ -1,0 +1,24 @@
+<?php
+
+use MyTodo;
+
+$post =  json_decode(file_get_contents('php://input'), true);
+
+$todo = new MyTodo();
+
+$todo->task = $post["todo"];
+
+$result = $todo->create();
+
+if ($result) {
+    echo json_encode($todo);
+} else {
+
+    echo 'Error: ';
+
+    $messages = $todo->getMessages();
+
+    foreach ($messages as $message) {
+        echo $message . PHP_EOL;
+    }
+}
