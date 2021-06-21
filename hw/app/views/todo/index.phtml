@@ -15,20 +15,20 @@ echo 'Количество дел: ' . $todos->count() . PHP_EOL;
 <pre  id="abzac">
 </pre>
 
-<div id="todo-list" class="box content">
+<div id="todo-list" class="column is-half is-offset-one-quarter box content ">
     <div  class="control">
         <input v-model="newTodo" class="input is-primary" type="text" >
         <button @click="addTodo" class="button is-primary">Добавить</button>
     </div>
     <br>
     Список добрых дел:
-    <ol>
+    <div>
         <todo-item
             v-for="todo in todoList"
             v-bind:todo="todo"
             v-bind:arr="todoList"
         >
         </todo-item>
-    </ol>
+    </div>
 </div>
 

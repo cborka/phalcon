@@ -53,14 +53,17 @@ app.component(
     {
         props: ['todo', 'arr'],
         template:
-            `<li>{{todo.id + ': ' + todo.task}}
+            `<div class=""> 
+            <div class="" align="left">
+            {{todo.task}}
+            </div>
+           <div align="right"> 
             <button @click="editTodo" class="button is-small is-primary is-light">
                 <span>Изменить</span>
             </button> 
-            <button @click="deleteTodo" class="button is-small is-danger is-light">
-                <span>Удалить</span>
-            </button> 
-            </li>`,
+            <button @click="deleteTodo" class="delete is-medium" align="right"></button>
+            </div>
+             </div>`,
         methods: {
             deleteTodo()
             {
