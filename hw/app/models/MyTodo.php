@@ -22,7 +22,7 @@ class MyTodo extends Model
 
     public function afterFetch()
     {
-        $this->task .= ' -> срочно!';
+//        $this->task .= ' -> срочно!';
 //        $this->status = explode(',', $this->status);
     }
 

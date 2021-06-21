@@ -1,34 +1,34 @@
 <?php
 
-echo 'Количество дел: ' . $todos->count() . PHP_EOL;
+
 
 ?>
 
-<p id="ab1">
-    Это абзацццц
-</p>
----
-<p id="abzac2">
-    И это абзацццц
-</p>
+<p id="ab1"></p>
 
-<pre  id="abzac">
-</pre>
+<p id="abzac2"></p>
+
+<pre id="abzac"></pre>
 
 <div id="todo-list" class="column is-half is-offset-one-quarter box content ">
-    <div  class="control">
-        <input v-model="newTodo" class="input is-primary" type="text" >
-        <button @click="addTodo" class="button is-primary">Добавить</button>
+    <div class="panel">
+        <p class="panel-heading">
+            Список дел
+        </p>
+        <div class="panel-block">
+            <input v-model="newTodo" class="input is-primary" type="text" >
+            <button @click="addTodo" class="button is-primary">Добавить</button>
+        </div>
+
+        <div>
+            <todo-item
+                v-for="todo in todoList"
+                v-bind:todo="todo"
+                v-bind:arr="todoList"
+            >
+            </todo-item>
+        </div>
     </div>
-    <br>
-    Список добрых дел:
-    <div>
-        <todo-item
-            v-for="todo in todoList"
-            v-bind:todo="todo"
-            v-bind:arr="todoList"
-        >
-        </todo-item>
-    </div>
+    <?php echo PHP_EOL . 'Количество дел: ' . $todos->count() . PHP_EOL;?>
 </div>
 

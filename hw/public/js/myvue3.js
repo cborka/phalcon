@@ -53,18 +53,64 @@ app.component(
     {
         props: ['todo', 'arr'],
         template:
-            `<div class=""> 
-            <div class="" align="left">
-            {{todo.task}}
+            `<div class="panel-block "> 
+            <div class="" align="left" @dblclick="updateTodo" id="td">
+                {{todo.task}}
             </div>
-           <div align="right"> 
-            <button @click="editTodo" class="button is-small is-primary is-light">
-                <span>Изменить</span>
-            </button> 
-            <button @click="deleteTodo" class="delete is-medium" align="right"></button>
+
+            <div align="right"> 
+               <button @click="deleteTodo" class="delete is-medium" align="right"></button>
+            </div>
+            
+            <div hidden>
+                <input v-model="todo.task" class="input is-primary" type="text" @keyup="saveTodo">
             </div>
              </div>`,
         methods: {
+            saveTodo(f) {
+//                alert(f.code);
+                if (f.code === 'Escape') {
+                    this.todo.task = this.tmp;
+                } else {
+                    if (f.code !== 'Enter')
+                        return;
+                }
+
+                let el = event.target;         // Элемент из которого вызываем
+                el = el.parentNode;
+                el.hidden = true;
+                el.previousElementSibling.previousElementSibling.hidden = false;
+
+                axios({
+                    method: 'post',
+                    url: '/todo/edit',
+                    data: {
+                        id: this.todo.id,
+                        task: this.todo.task
+                    }
+                })
+                .then(res => {
+                    // $("#abzac").text(JSON.stringify(res.data, null, 4)).show(); // Результат ответа от сервера
+                    // $("#abzac2").text('=> ' + res.status); // Результат ответа от сервера
+                    if (res.status !== 200) {
+                        alert (res.data);
+                    }
+                })
+                .catch(err => {
+                    alert(err);
+                });
+
+            },
+            updateTodo()
+            {
+                let el = event.target;         // Элемент из которого вызываем
+
+                el.hidden = true;
+                el.nextElementSibling.nextElementSibling.hidden = false;
+
+                this.tmp = this.todo.task;
+
+            },
             deleteTodo()
             {
                 axios({
@@ -75,8 +121,8 @@ app.component(
                     }
                 })
                     .then(res => {
-                        $("#abzac").text(JSON.stringify(res.data, null, 4)).show(); // Результат ответа от сервера
-                        $("#abzac2").text('=> ' + res.status); // Результат ответа от сервера
+                        // $("#abzac").text(JSON.stringify(res.data, null, 4)).show(); // Результат ответа от сервера
+                        // $("#abzac2").text('=> ' + res.status); // Результат ответа от сервера
 
                         if (res.status === 200) {
                             let idx = this.arr.findIndex(item => item.id == this.todo.id);
@@ -89,9 +135,9 @@ app.component(
                         alert(err);
                     });
             },
-            editTodo()
+            editTodo() //  Это уже не нужно
             {
-                let task2 = prompt('Редактирование доброго дела', this.todo.task);
+//                let task2 = prompt('Редактирование доброго дела', this.todo.task);
 
                 axios({
                     method: 'post',
@@ -102,8 +148,8 @@ app.component(
                     }
                 })
                     .then(res => {
-                        $("#abzac").text(JSON.stringify(res.data, null, 4)).show(); // Результат ответа от сервера
-                        $("#abzac2").text('=> ' + res.status); // Результат ответа от сервера
+                        // $("#abzac").text(JSON.stringify(res.data, null, 4)).show(); // Результат ответа от сервера
+                        // $("#abzac2").text('=> ' + res.status); // Результат ответа от сервера
 
                         if (res.status === 200) {
                             this.todo.task = task2;
