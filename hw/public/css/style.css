@@ -28,3 +28,11 @@
 .cyan { color: cyan;}
 .errorMessage { color: cyan;}
 .magenta { color: magenta;}
+
+.floatright {
+    float: right;
+}
+
+.floatleft {
+    float: left;
+}

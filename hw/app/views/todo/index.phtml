@@ -10,14 +10,14 @@
 
 <pre id="abzac"></pre>
 
-<div id="todo-list" class="column is-half is-offset-one-quarter box content ">
+<div id="todo-list" class="column is-half is-offset-one-quarter box content">
     <div class="panel">
         <p class="panel-heading">
             Список дел
         </p>
         <div class="panel-block">
-            <input v-model="newTodo" class="input is-primary" type="text" >
-            <button @click="addTodo" class="button is-primary">Добавить</button>
+            <input v-model="newTodo" class="input is-primary" type="text" placeholder="Что нужно сделать?"  @keyup="keyupTodo">
+<!--            <button @click="addTodo" class="button is-primary">Добавить</button>-->
         </div>
 
         <div>
@@ -29,6 +29,6 @@
             </todo-item>
         </div>
     </div>
-    <?php echo PHP_EOL . 'Количество дел: ' . $todos->count() . PHP_EOL;?>
+    <p> Количество дел: {{ this.todoList.length }}</p>
 </div>
 

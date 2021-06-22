@@ -4,36 +4,41 @@ const ToDoList = {
     {
         return {
             todoList: [],
-            newTodo: 'Новое дело'
+//            todoCount: 0,
+            newTodo: ''
         }
     },
     mounted()
     {
         axios.get('/todo/find').then(res => {
             this.todoList = res.data;
-//            $("#abzac2").text('>>>' + this.todoList[1].task);
         });
     },
     methods: {
+        keyupTodo(f) {
+           if (f.code === 'Enter') {
+               this.addTodo();
+           }
+        },
         addTodo()
         {
+            if (this.newTodo.length < 1) {
+                alert ('Нельзя вставить пустую строку.');
+                return;
+            }
+
             axios({
                 method: 'post',
                 url: '/todo/add',
-//                headers: { 'content-type': 'multipart/form-data' },
-//                headers: { 'content-type': 'application/x-www-form-urlencoded; charset=utf-8' },
                 data: {
-                    todo: this.newTodo,
-                    todo2: 'ssss'
+                    todo: this.newTodo
                 }
             })
             .then(res => {
-                $("#abzac").text(JSON.stringify(res.data, null, 4)).show(); // Результат ответа от сервера
-                $("#abzac2").text('=> ' + res.status); // Результат ответа от сервера
-
                 if (res.status === 200) {
                     let rec = res.data;
-                    this.todoList.push({id: rec.id, task: rec.task})
+                    this.todoList.push({id: rec.id, task: rec.task});
+                    this.newTodo = '';
                 } else {
                     alert (res.data);
                 }
@@ -53,22 +58,64 @@ app.component(
     {
         props: ['todo', 'arr'],
         template:
-            `<div class="panel-block "> 
-            <div class="" align="left" @dblclick="updateTodo" id="td">
-                {{todo.task}}
+            `<div class="panel-block " >
+            <div class="" align="left" @dblclick="startEditTodo" id="td" @mouseenter="mouseenter" @mouseleave="mouseleave" style="overflow: auto; width: 100%;">
+
+                <div class="" style="float: left; margin-top: 8px">
+                
+                <input type="checkbox" v-model="todo.flag" />
+                <!--<label for="checkbox" class="checkbox">{{ this.todo.flag }}</label>-->
+                
+                    <!--<label class="checkbox">-->
+                        <!--<input type="checkbox" >-->
+                    <!--</label>-->
+                </div>
+
+                <p class="" style="float: left; margin: 8px">
+                    {{todo.task}}
+                </p>
+
+                <div class="" style="float: right; margin-top: 8px">
+                    <button @click="deleteTodo" hidden class="delete is-medium "></button>
+               </div>
             </div>
 
-            <div align="right"> 
-               <button @click="deleteTodo" class="delete is-medium" align="right"></button>
-            </div>
-            
-            <div hidden>
+            <div hidden style="width: 100%">
                 <input v-model="todo.task" class="input is-primary" type="text" @keyup="saveTodo">
             </div>
              </div>`,
+            // `<div class="panel-block" >
+            // <div class="level" align="left" @dblclick="startEditTodo" id="td" @mouseenter="mouseenter" @mouseleave="mouseleave" style="width: 100%;">
+            //
+            //     <div class="level-left" >
+            //         <label class="checkbox">
+            //             <input type="checkbox" >
+            //         </label>
+            //     </div>
+            //
+            //     <p class="level-left">
+            //         {{todo.task}}
+            //     </p>
+            //
+            //     <div class="level-right">
+            //         <button @click="deleteTodo" hidden class="delete is-medium "></button>
+            //    </div>
+            // </div>
+            //
+            // <div class="" hidden style="width: 100%">
+            //     <input v-model="todo.task" class="input is-primary" type="text" @keyup="saveTodo">
+            // </div>
+            //  </div>`,
         methods: {
+            mouseenter() {
+                let el = event.target;
+                el.lastElementChild.lastElementChild.hidden = false;
+            },
+            mouseleave() {
+                let el = event.target;
+                el.lastElementChild.lastElementChild.hidden = true;
+            },
             saveTodo(f) {
-//                alert(f.code);
                 if (f.code === 'Escape') {
                     this.todo.task = this.tmp;
                 } else {
@@ -76,22 +123,33 @@ app.component(
                         return;
                 }
 
+                if (this.todo.task.length < 1) {
+                    alert ('Нельзя вставить пустую строку.');
+                    return;
+                }
+
                 let el = event.target;         // Элемент из которого вызываем
-                el = el.parentNode;
+                el = el.parentElement;
                 el.hidden = true;
-                el.previousElementSibling.previousElementSibling.hidden = false;
+                el.previousElementSibling.hidden = false;
+
+                if (f.code === 'Escape') {
+                    return;
+                }
+
+//                alert('zxcvdswwdw');
+//                alert(this.todo.task);
 
                 axios({
                     method: 'post',
                     url: '/todo/edit',
                     data: {
                         id: this.todo.id,
-                        task: this.todo.task
+                        task: this.todo.task,
+                        flag: this.todo.flag
                     }
                 })
                 .then(res => {
-                    // $("#abzac").text(JSON.stringify(res.data, null, 4)).show(); // Результат ответа от сервера
-                    // $("#abzac2").text('=> ' + res.status); // Результат ответа от сервера
                     if (res.status !== 200) {
                         alert (res.data);
                     }
@@ -101,18 +159,30 @@ app.component(
                 });
 
             },
-            updateTodo()
+            startEditTodo()
             {
                 let el = event.target;         // Элемент из которого вызываем
 
+                if (el.tagName === 'P') {
+                    el = el.parentElement;
+                }
+
+                if (el.tagName !== 'DIV') {
+                    return;
+                }
+
                 el.hidden = true;
-                el.nextElementSibling.nextElementSibling.hidden = false;
+                el.nextElementSibling.hidden = false;
+                el.nextElementSibling.firstElementChild.focus();
 
-                this.tmp = this.todo.task;
-
+                this.tmp = this.todo.task; // Сохраняем на случай отмены
             },
             deleteTodo()
             {
+                if (!confirm('Желаете удалить ?')) {
+                    return;
+                }
+
                 axios({
                     method: 'post',
                     url: '/todo/delete',
@@ -121,38 +191,10 @@ app.component(
                     }
                 })
                     .then(res => {
-                        // $("#abzac").text(JSON.stringify(res.data, null, 4)).show(); // Результат ответа от сервера
-                        // $("#abzac2").text('=> ' + res.status); // Результат ответа от сервера
-
                         if (res.status === 200) {
                             let idx = this.arr.findIndex(item => item.id == this.todo.id);
                             this.arr.splice(idx, 1);
-                        } else {
-                            alert (res.data);
-                        }
-                    })
-                    .catch(err => {
-                        alert(err);
-                    });
-            },
-            editTodo() //  Это уже не нужно
-            {
-//                let task2 = prompt('Редактирование доброго дела', this.todo.task);
-
-                axios({
-                    method: 'post',
-                    url: '/todo/edit',
-                    data: {
-                        id: this.todo.id,
-                        task: task2
-                    }
-                })
-                    .then(res => {
-                        // $("#abzac").text(JSON.stringify(res.data, null, 4)).show(); // Результат ответа от сервера
-                        // $("#abzac2").text('=> ' + res.status); // Результат ответа от сервера
-
-                        if (res.status === 200) {
-                            this.todo.task = task2;
+//                            this.todoCount = this.arr.length;
                         } else {
                             alert (res.data);
                         }

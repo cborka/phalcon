@@ -8,6 +8,7 @@ class MyTodo extends Model
     public $id;
     public $task;
     public $dt;
+    public $flag;
 //    public $status;
 
 //    public function initialize()
