@@ -11,10 +11,10 @@ class MyTodo extends Model
     public $flag;
 //    public $status;
 
-//    public function initialize()
-//    {
-//        $this->useDynamicUpdate(true);
-//    }
+    public function initialize()
+    {
+        $this->useDynamicUpdate(true);
+    }
 
     public function beforeSave()
     {
@@ -23,6 +23,7 @@ class MyTodo extends Model
 
     public function afterFetch()
     {
+        $this->flag = ($this->flag == 1);
 //        $this->task .= ' -> срочно!';
 //        $this->status = explode(',', $this->status);
     }

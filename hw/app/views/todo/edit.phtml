@@ -4,6 +4,9 @@ use MyTodo;
 
 $post =  json_decode(file_get_contents('php://input'), true);
 
+print_r($post);
+
+
 $todo = MyTodo::findFirst(
     [
         'conditions' => 'id = :id:',
@@ -15,7 +18,7 @@ $todo = MyTodo::findFirst(
 
 //$todo->id = $post["id"];
 $todo->task = $post["task"];
-$todo->flag = 1;
+$todo->flag = $post["flag"];
 //$todo->flag = $post["flag"];
 
 $result = $todo->update();

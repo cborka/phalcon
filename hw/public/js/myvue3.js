@@ -63,8 +63,8 @@ app.component(
 
                 <div class="" style="float: left; margin-top: 8px">
                 
-                <input type="checkbox" v-model="todo.flag" />
-                <!--<label for="checkbox" class="checkbox">{{ this.todo.flag }}</label>-->
+                <input type="checkbox" v-model="todo.flag" @change="saveFlag" />
+                <label for="checkbox" class="checkbox">{{ this.todo.flag ? 1 : 0 }}</label>
                 
                     <!--<label class="checkbox">-->
                         <!--<input type="checkbox" >-->
@@ -81,7 +81,7 @@ app.component(
             </div>
 
             <div hidden style="width: 100%">
-                <input v-model="todo.task" class="input is-primary" type="text" @keyup="saveTodo">
+                <input v-model="todo.task" class="input is-primary" type="text" @keyup="keyupTodo1">
             </div>
              </div>`,
             // `<div class="panel-block" >
@@ -107,6 +107,9 @@ app.component(
             // </div>
             //  </div>`,
         methods: {
+            //
+            // Показать / спорятать кнопку удаления
+            //
             mouseenter() {
                 let el = event.target;
                 el.lastElementChild.lastElementChild.hidden = false;
@@ -115,7 +118,22 @@ app.component(
                 let el = event.target;
                 el.lastElementChild.lastElementChild.hidden = true;
             },
-            saveTodo(f) {
+            //
+            // Сохранить флаг при переключении
+            //
+            saveFlag() {
+                this.saveTodo();
+
+                // Поменять форматирование записи
+
+                // class += ... надо вспоминать jQuery
+
+            },
+            //
+            // При нажатии клавиши отрабатываем Escape и Enter (отменить и сохранить)
+            // убираем поле редактироваия и показываем запись
+            //
+            keyupTodo1(f) {
                 if (f.code === 'Escape') {
                     this.todo.task = this.tmp;
                 } else {
@@ -124,32 +142,37 @@ app.component(
                 }
 
                 if (this.todo.task.length < 1) {
-                    alert ('Нельзя вставить пустую строку.');
+                    alert('Нельзя вставить пустую строку.');
                     return;
                 }
 
-                let el = event.target;         // Элемент из которого вызываем
-                el = el.parentElement;
+                // убираем поле редактироваия и показываем запись
+                // можно вынести в отдельную функцию и тем самым упросить логику
+                let el = event.target;          // элемент - поле редактирования
+                el = el.parentElement;          // div в котором оно расположено
                 el.hidden = true;
-                el.previousElementSibling.hidden = false;
+                el.previousElementSibling.hidden = false; // div в котором сама запись
 
-                if (f.code === 'Escape') {
-                    return;
+                if (f.code !== 'Escape') {
+                    this.saveTodo();
                 }
-
-//                alert('zxcvdswwdw');
-//                alert(this.todo.task);
-
+            },
+            //
+            // Сохранить запись в базе данных
+            //
+            saveTodo() {
                 axios({
                     method: 'post',
                     url: '/todo/edit',
                     data: {
                         id: this.todo.id,
                         task: this.todo.task,
-                        flag: this.todo.flag
+                        flag: this.todo.flag ? 1 : 0
                     }
                 })
                 .then(res => {
+//                    $("#abzac").text(JSON.stringify(res.data, null, 4)).show(); // Результат ответа от сервера
+//                    $("#abzac2").text('=> ' + res.status); // Результат ответа от сервера
                     if (res.status !== 200) {
                         alert (res.data);
                     }
@@ -159,15 +182,18 @@ app.component(
                 });
 
             },
+            //
+            // Спрятать запись, показать поле редактирования записи
+            //
             startEditTodo()
             {
                 let el = event.target;         // Элемент из которого вызываем
 
-                if (el.tagName === 'P') {
+                if (el.tagName === 'P') {       // можем тыкнуть на саму запись
                     el = el.parentElement;
                 }
 
-                if (el.tagName !== 'DIV') {
+                if (el.tagName !== 'DIV') {     // или можем тыкнуть на div в котором запись
                     return;
                 }
 
@@ -177,6 +203,9 @@ app.component(
 
                 this.tmp = this.todo.task; // Сохраняем на случай отмены
             },
+            //
+            // Удалить запись
+            //
             deleteTodo()
             {
                 if (!confirm('Желаете удалить ?')) {
@@ -194,7 +223,6 @@ app.component(
                         if (res.status === 200) {
                             let idx = this.arr.findIndex(item => item.id == this.todo.id);
                             this.arr.splice(idx, 1);
-//                            this.todoCount = this.arr.length;
                         } else {
                             alert (res.data);
                         }
