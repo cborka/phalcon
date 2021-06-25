@@ -26,7 +26,7 @@ const ToDoList = {
             })
                 .then(res => {
                     // $("#abzac").text(JSON.stringify(res.data, null, 4)).show(); // Результат ответа от сервера
-                    // $("#abzac2").text('=> ' + res.status); // Результат ответа от сервера
+                    // $("#abzac2").text('=> ' + res.status);      // Результат ответа от сервера
                     if (res.status === 200) {
                         this.todoList = res.data;
                     } else {
@@ -80,54 +80,28 @@ app.component(
     {
         props: ['todo', 'arr'],
         template:
-            `<div class="panel-block " >
-            <div class="" align="left" @dblclick="startEditTodo" id="td" @mouseenter="mouseenter" @mouseleave="mouseleave" style="overflow: auto; width: 100%;">
+           `<div class="panel-block">
+            <div class="level" align="left" @dblclick="startEditTodo" id="td" @mouseenter="mouseenter" @mouseleave="mouseleave" style="width: 100%; margin-bottom: 8px; margin-top: 8px">
 
-                <div class="" style="float: left; margin-top: 8px">
-                
-                <input type="checkbox" v-model="todo.flag" @change="saveFlag" />
-                <label for="checkbox" class="checkbox">{{ this.todo.flag ? 1 : 0 }}</label>
-                
-                    <!--<label class="checkbox">-->
-                        <!--<input type="checkbox" >-->
-                    <!--</label>-->
+                <div class="level-left" >
+                    <input type="checkbox" v-model="todo.flag" @change="saveFlag" />
+                    <label for="checkbox" class="checkbox">{{ }}</label>
+                    <!--<label for="checkbox" class="checkbox">{{ this.todo.flag ? 1 : 0 }}</label>-->
+
+                    <p class="level-item">
+                        {{todo.task}}
+                    </p>
                 </div>
 
-                <p class="" style="float: left; margin: 8px">
-                    {{todo.task}}
-                </p>
-
-                <div class="" style="float: right; margin-top: 8px">
+                <div class="level-right">
                     <button @click="deleteTodo" hidden class="delete is-medium "></button>
                </div>
             </div>
 
-            <div hidden style="width: 100%">
+            <div class="" hidden style="width: 100%">
                 <input v-model="todo.task" class="input is-primary" type="text" @keyup="keyupTodo1">
             </div>
              </div>`,
-            // `<div class="panel-block" >
-            // <div class="level" align="left" @dblclick="startEditTodo" id="td" @mouseenter="mouseenter" @mouseleave="mouseleave" style="width: 100%;">
-            //
-            //     <div class="level-left" >
-            //         <label class="checkbox">
-            //             <input type="checkbox" >
-            //         </label>
-            //     </div>
-            //
-            //     <p class="level-left">
-            //         {{todo.task}}
-            //     </p>
-            //
-            //     <div class="level-right">
-            //         <button @click="deleteTodo" hidden class="delete is-medium "></button>
-            //    </div>
-            // </div>
-            //
-            // <div class="" hidden style="width: 100%">
-            //     <input v-model="todo.task" class="input is-primary" type="text" @keyup="saveTodo">
-            // </div>
-            //  </div>`,
         methods: {
             //
             // Показать / спорятать кнопку удаления
@@ -212,11 +186,13 @@ app.component(
                 let el = event.target;         // Элемент из которого вызываем
 
                 if (el.tagName === 'P') {       // можем тыкнуть на саму запись
-                    el = el.parentElement;
-                }
-
-                if (el.tagName !== 'DIV') {     // или можем тыкнуть на div в котором запись
-                    return;
+                    el = el.parentElement.parentElement;
+                } else {
+                    if (el.tagName !== 'DIV') {     // или можем тыкнуть на div в котором запись
+                        el = el.parentElement;
+                    } else {
+                        return;
+                    }
                 }
 
                 el.hidden = true;
