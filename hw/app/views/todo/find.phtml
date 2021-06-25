@@ -1,16 +1,28 @@
 <?php
 
-//use MyTodo;
+use MyTodo;
 
 $eol = '<br />';
 //$eol = PHP_EOL;
 
 //echo 'Содержимое этого файла отдаётся по запросу аксиос.' . $eol;
 
+$where = '';
 
-//$this->view->todos = MyTodo::find();
+$post =  json_decode(file_get_contents('php://input'), true);
+switch ($post["flag"]) {
+    case 0:
+        $where = 'flag = 0';
+        break;
+    case 1:
+        $where = 'flag = 1';
+        break;
+//    default:
+//        $where = '';
+}
+$todos = $this->view->todos = MyTodo::find($where);
 
-// var_dump($todos);
+//print_r($post);
 
 //echo 'Lines: ' . $todos->count() . $eol;
 

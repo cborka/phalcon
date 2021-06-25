@@ -12,12 +12,22 @@
 
 <div id="todo-list" class="column is-half is-offset-one-quarter box content">
     <div class="panel">
-        <p class="panel-heading">
+        <div class="panel-heading">
             Список дел
-        </p>
-        <div class="panel-block">
-            <input v-model="newTodo" class="input is-primary" type="text" placeholder="Что нужно сделать?"  @keyup="keyupTodo">
-<!--            <button @click="addTodo" class="button is-primary">Добавить</button>-->
+        </div>
+        <nav class="level panel-block" style="margin-bottom: 0px">
+            <div id="btn-done" class="level-item has-text-centered">
+                <button class="button is-danger is-inverted"@click="findTodos(0)">Надо сделать</button>
+            </div>
+            <div class="level-item has-text-centered">
+                <button class="button is-primary is-inverted" @click="findTodos(1)">Выполнены</button>
+            </div>
+            <div class="level-item has-text-centered">
+                <button class="button is-info is-inverted"@click="findTodos(3)">Все</button>
+            </div>
+        </nav>
+        <div class="panel-block" style="margin-top: 0px">
+            <input v-model="newTodo" class="input is-primary" type="text" placeholder="Что нужно сделать?" @keyup="keyupTodo">
         </div>
 
         <div>

@@ -19,8 +19,8 @@ class TodoController extends Controller
             View::LEVEL_ACTION_VIEW
         );
 
-        $this->view->todos = MyTodo::find();
-        $this->view->todo1 = MyTodo::findFirst();
+//        $this->view->todos = MyTodo::find();
+//        $this->view->todo1 = MyTodo::findFirst();
 
         echo "findAction: Эта строка могла бы возвратиться по запросу.";
     }

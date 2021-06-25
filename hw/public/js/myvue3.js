@@ -10,11 +10,33 @@ const ToDoList = {
     },
     mounted()
     {
-        axios.get('/todo/find').then(res => {
-            this.todoList = res.data;
-        });
+        this.findTodos(0);
+        // axios.get('/todo/find').then(res => {
+        //     this.todoList = res.data;
+        // });
     },
     methods: {
+        findTodos(flag) {
+            axios({
+                method: 'post',
+                url: '/todo/find',
+                data: {
+                    flag: flag
+                }
+            })
+                .then(res => {
+                    // $("#abzac").text(JSON.stringify(res.data, null, 4)).show(); // Результат ответа от сервера
+                    // $("#abzac2").text('=> ' + res.status); // Результат ответа от сервера
+                    if (res.status === 200) {
+                        this.todoList = res.data;
+                    } else {
+                        alert (res.data);
+                    }
+                })
+                .catch(err => {
+                    alert(err);
+                });
+        },
         keyupTodo(f) {
            if (f.code === 'Enter') {
                this.addTodo();
