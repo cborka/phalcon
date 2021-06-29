@@ -22,4 +22,14 @@ class IndexController extends Controller
     {
 //        $this->view->users = Users::find();
     }
+
+    public function editorAction()
+    {
+
+    }
+
+    public function saveAction()
+    {
+
+    }
 }
