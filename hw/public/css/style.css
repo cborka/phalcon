@@ -29,6 +29,15 @@
 .errorMessage { color: cyan;}
 .magenta { color: magenta;}
 
+
+.fon1 {
+    background-color: lightcyan;
+}
+
+.fon2 {
+    background-color: ivory;
+}
+
 .floatright {
     float: right;
 }

@@ -1,73 +1,81 @@
-<section class="section " >
+<section class="section" >
+
     <h1 class="title is-primary">Контент</h1>
-    <h2 class="subtitle">
-        Просто контент.
-    </h2>
 
 
 
-    <div id="app" class="box title is-primary">
-        {{ message }}
-    </div>
-
-    <br>
-
-    <div id="app-2">
-      <span v-bind:title="message">
-        Наведи на меня курсор на пару секунд,
-        чтобы увидеть динамически связанное значение title!
-      </span>
-    </div>
-
-    <br>
-
-    <div id="app-3">
-        <span v-if="seen">Сейчас меня видно</span>
-    </div>
-
-    <br>
-
-    <div id="app-4">
-        <ol>
-            <li v-for="todo in todos">
-                {{ todo.text }}
-            </li>
-        </ol>
-    </div>
-
-    <br>
-
-    <div id="app-5">
-        <p>{{ message }}</p>
-        <button v-on:click="reverseMessage">Перевернуть сообщение</button>
-    </div>
-
-    <br>
-
-    <div id="app-6">
-        <p>{{ message }}</p>
-        <input v-model="message">
-    </div>
-
-    <br>
-
-    <div id="app-7">
-        <ol>
-            <!--
-              Теперь мы можем передать каждому компоненту todo-item объект
-              с информацией о задаче, который будет динамически меняться.
-              Мы также определяем для каждого компонента "key",
-              значение которого мы разберём далее в руководстве.
-            -->
-            <todo-item
-                    v-for="item in groceryList"
-                    v-bind:todo="item"
-                    v-bind:key="item.id"
-            ></todo-item>
-        </ol>
-    </div>
 
 
 </section>
 
-
+<!--<section class="section " >-->
+<!--    <h1 class="title is-primary">Контент</h1>-->
+<!--    <h2 class="subtitle">-->
+<!--        Просто контент.-->
+<!--    </h2>-->
+<!---->
+<!---->
+<!---->
+<!--    <div id="app" class="box title is-primary">-->
+<!--        {{ message }}-->
+<!--    </div>-->
+<!---->
+<!--    <br>-->
+<!---->
+<!--    <div id="app-2">-->
+<!--      <span v-bind:title="message">-->
+<!--        Наведи на меня курсор на пару секунд,-->
+<!--        чтобы увидеть динамически связанное значение title!-->
+<!--      </span>-->
+<!--    </div>-->
+<!---->
+<!--    <br>-->
+<!---->
+<!--    <div id="app-3">-->
+<!--        <span v-if="seen">Сейчас меня видно</span>-->
+<!--    </div>-->
+<!---->
+<!--    <br>-->
+<!---->
+<!--    <div id="app-4">-->
+<!--        <ol>-->
+<!--            <li v-for="todo in todos">-->
+<!--                {{ todo.text }}-->
+<!--            </li>-->
+<!--        </ol>-->
+<!--    </div>-->
+<!---->
+<!--    <br>-->
+<!---->
+<!--    <div id="app-5">-->
+<!--        <p>{{ message }}</p>-->
+<!--        <button v-on:click="reverseMessage">Перевернуть сообщение</button>-->
+<!--    </div>-->
+<!---->
+<!--    <br>-->
+<!---->
+<!--    <div id="app-6">-->
+<!--        <p>{{ message }}</p>-->
+<!--        <input v-model="message">-->
+<!--    </div>-->
+<!---->
+<!--    <br>-->
+<!---->
+<!--    <div id="app-7">-->
+<!--        <ol>-->
+<!--              Теперь мы можем передать каждому компоненту todo-item объект-->
+<!--              с информацией о задаче, который будет динамически меняться.-->
+<!--              Мы также определяем для каждого компонента "key",-->
+<!--              значение которого мы разберём далее в руководстве.-->
+<!--            <todo-item-->
+<!--                    v-for="item in groceryList"-->
+<!--                    v-bind:todo="item"-->
+<!--                    v-bind:key="item.id"-->
+<!--            ></todo-item>-->
+<!--        </ol>-->
+<!--    </div>-->
+<!---->
+<!---->
+<!--</section>-->
+<!---->
+<!---->
