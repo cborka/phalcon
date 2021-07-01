@@ -39,11 +39,11 @@
     </div>
 
 
-    <div id="counter" class="block fon1">
-        Счётчик: {{ counter }}
-        <button v-on:click="Increment">++</button>
-        <button v-on:click="Decrement">--</button>
-    </div>
+<!--    <div id="counter" class="block fon1">-->
+<!--        Счётчик: {{ counter }}-->
+<!--        <button v-on:click="Increment">++</button>-->
+<!--        <button v-on:click="Decrement">--</button>-->
+<!--    </div>-->
 
 
 </section>
@@ -55,8 +55,13 @@
 
 
 <!--   Vue 3     -->
-<script src="https://unpkg.com/vue@next"></script>
-<script src="/js/vue3lib.js?<?php echo date ("U", filemtime(dirname(__FILE__) . "/js/vue3lib.js")); ?>"></script>
+<!--<script src="https://unpkg.com/vue@next"></script>-->
+<!--<script src="/js/vue3lib.js?--><?php //echo date ("U", filemtime(dirname(__FILE__) . "/js/vue3lib.js")); ?><!--"></script>-->
+
+<!--<script src="/js/afmapp.vue?--><?php //echo date ("U", filemtime(dirname(__FILE__) . "/js/afmapp.vue")) ?><!--"></script>-->
+<!--<script  type="module" src="/js/afm.js?--><?php //echo date ("U", filemtime(dirname(__FILE__) . "/js/afm.js")) ?><!--"></script>-->
+<script src="js/afmapp.vue?<?php echo date ("U", filemtime("js/afmapp.vue")) ?>"></script>
+<script  type="module" src="/js/afm.js?<?php echo date ("U", filemtime("js/afm.js")) ?>"></script>
 
   <script>
 
