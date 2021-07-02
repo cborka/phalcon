@@ -45,3 +45,38 @@
 .floatleft {
     float: left;
 }
+
+/* ========================= afm ==================== */
+
+.afm {
+    width: 800px;
+    margin: auto;
+    padding: 0;
+    background-color: lightgray;
+}
+
+.afm-header {
+    color: hsl(0, 0%, 96%);
+    margin: 0;
+    padding-left: 12px;
+}
+
+.lefttcol {
+    border-right: hsl(0, 0%, 86%) 1px solid;
+    background-color: lavender;
+}
+
+.rightcol {
+    background-color: hsl(0, 0%, 96%);
+}
+
+
+
+
+
+
+
+
+
+
+

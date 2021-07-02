@@ -21,8 +21,8 @@
 <body>
 <header class="header fon1">
     <section class="content  has-text-centered">
-        <a href="/test_vue3.php">
-            <h1 class="title">ШАПКА</h1>
+        <a href="/">
+            <h1 class="title" title="В начало">ШАПКА</h1>
         </a>
     </section>
 </header>
