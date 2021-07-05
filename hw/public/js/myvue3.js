@@ -79,8 +79,8 @@ app.component(
     'todo-item',
     {
         props: ['todo', 'arr'],
-        template:
-           `<div class="panel-block">
+        template:`
+            <div class="panel-block">
             <div class="level" align="left" @dblclick="startEditTodo" id="td" @mouseenter="mouseenter" @mouseleave="mouseleave" style="width: 100%; margin-bottom: 8px; margin-top: 8px">
 
                 <div class="level-left" >
@@ -101,7 +101,8 @@ app.component(
             <div class="" hidden style="width: 100%">
                 <input v-model="todo.task" class="input is-primary" type="text" @keyup="keyupTodo1">
             </div>
-             </div>`,
+             </div>
+        `,
         methods: {
             //
             // Показать / спорятать кнопку удаления

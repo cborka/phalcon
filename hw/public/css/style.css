@@ -49,10 +49,10 @@
 /* ========================= afm ==================== */
 
 .afm {
-    width: 800px;
+    width: 900px;
     margin: auto;
     padding: 0;
-    background-color: lightgray;
+    xbackground-color: lightgray;
 }
 
 .afm-header {
@@ -63,11 +63,16 @@
 
 .lefttcol {
     border-right: hsl(0, 0%, 86%) 1px solid;
-    background-color: lavender;
+    margin: 0;
+    padding: 0;
+
+    background-color: ivory;
 }
 
 .rightcol {
     background-color: hsl(0, 0%, 96%);
+    margin: 0;
+    padding: 0;
 }
 
 
