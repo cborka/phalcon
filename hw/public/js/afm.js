@@ -28,12 +28,20 @@ const Afs = {
         <div class="columns" style="margin: 0; height: 600px; ">
             <div class="column is-two-thirds lefttcol">
       
-                <div class="level " style="margin-bottom: 0; padding-left: 12px; border-bottom: hsl(0, 0%, 86%) 1px solid; ">
+               <!---------------------- Полное имя папки ----------------------->
+               <div class="level "style="margin-bottom: 0; padding-left: 12px; border-bottom: hsl(0, 0%, 86%) 1px solid; ">
                    <div class="level-left" >... ./</div>
       
                 </div>
 
-                <div class="level " style="padding: 12px; ">
+                <!---------------------- Верхние кнопки ----------------------->
+                <div class="level " 
+                    style="
+                        padding: 12px; 
+                        padding-bottom: 0;  
+                        margin-bottom: 12px;
+                        "
+                >
                    <div class="level-left" >
                         <button class="button" disabled>Фильтр по файлам</button>
                    </div>
@@ -46,16 +54,73 @@ const Afs = {
                    </div>
                 </div>
                 
-                <div class="panel">
+                <!---------------------- Список файлов в папке ----------------------->
+                <div class="box"  style="padding: 0 12px 0 12px; margin: 0 12px 0 12px; background-color: hsl(0, 0%, 96%)" >
+                    <folder></folder>
+                    <folder></folder>
                     <folder></folder>
                     <folder></folder>
                     <folder></folder>
                 </div>
+                
+                <!---------------------- Нижние кнопки ----------------------->
+                <div class="level " style="padding: 0 12px 0 12px; ">
+                    <div class="level-left" >
+                        <input type="checkbox" checked @change="" />
+                        <label for="checkbox" class="checkbox">{{}}</label>
+                        
+                        <div class="buttons" style="padding: 12px; ">
+                            <button class="button is-primary is-light">Переместить</button>
+                            <button class="button is-primary is-light">Скачать</button>
+                            <button class="button is-danger">Удалить</button>
+                        </div>    
+                    </div>
+
+                    <div class="level-right" >
+                        <div class="buttons">
+                            <button class="button is-primary has-background-primary-dark ">Вставить</button>
+                        </div>
+                    </div>
+                </div>
+                 
+                
             </div>
             
-            <div class="column rightcol">Auto
-      
-      
+            <div class="column rightcol">
+
+
+                <div class="level" style=" margin-top: 52px; padding-bottom: 12px; border-bottom: hsl(0, 0%, 86%) 1px solid; ">
+                     <div class="level-item has-text-centered">
+                        IMG.JPG
+                    </div>
+                </div>
+
+                <div class="level" style="padding-bottom: 16px;  margin: 0px; border-bottom: hsl(0, 0%, 86%) 1px solid; ">
+
+                     <div class="block " style="margin-top: 0px; margin-left: 12px; border: red 0px solid; ">
+                    <!--<div class="box" style=" border: red 1px solid; ">-->
+                    
+                    <figure class="image " style="display: inline-block; margin: 8px; border: navy 0px solid; width: 43%">
+                        <img src="/img/logo-earth.jpg" >
+                    </figure>
+                         
+                    <figure class="image " style="display: inline-block; margin: 8px; border: navy 0px solid;  width: 43%">
+                        <img src="/img/logo-earth.jpg">
+                    </figure>
+                         
+                    <figure class="image " style="display: inline-block; margin: 8px; border: navy 0px solid; width: 43%">
+                        <img src="/img/logo-earth.jpg" >
+                    </figure>
+                         
+                    </div>
+                </div>
+                
+                <div class="level-left " style=" padding: 12px 12px 12px 24px; border-bottom: hsl(0, 0%, 86%) 1px solid; ">
+                     <div class="level-item ">
+                        IMG.JPG
+                    </div>
+                </div>
+
             </div>
         </div>
 

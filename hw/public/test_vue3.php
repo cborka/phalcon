@@ -45,6 +45,8 @@
 <!--        <button v-on:click="Decrement">--</button>-->
 <!--    </div>-->
 
+    <div id="app">{{count}}</div>
+
 
 </section>
 
@@ -55,17 +57,28 @@
 
 
 <!--   Vue 3     -->
-<!--<script src="https://unpkg.com/vue@next"></script>-->
+<script src="https://unpkg.com/vue@next"></script>
 <!--<script src="/js/vue3lib.js?--><?php //echo date ("U", filemtime(dirname(__FILE__) . "/js/vue3lib.js")); ?><!--"></script>-->
 
 <!--<script src="/js/afmapp.vue?--><?php //echo date ("U", filemtime(dirname(__FILE__) . "/js/afmapp.vue")) ?><!--"></script>-->
 <!--<script  type="module" src="/js/afm.js?--><?php //echo date ("U", filemtime(dirname(__FILE__) . "/js/afm.js")) ?><!--"></script>-->
-<script src="js/afmapp.vue?<?php echo date ("U", filemtime("js/afmapp.vue")) ?>"></script>
-<script  type="module" src="/js/afm.js?<?php echo date ("U", filemtime("js/afm.js")) ?>"></script>
+<!--<script src="js/afmapp.vue?--><?php //echo date ("U", filemtime("js/afmapp.vue")) ?><!--"></script>-->
+<!--<script  type="module" src="/js/afm.js?--><?php //echo date ("U", filemtime("js/afm.js")) ?><!--"></script>-->
 
   <script>
 
+      const RootComponent =  {
+          data() {
+              return { count: 4 }
+          }
+      };
 
+      const app = Vue.createApp(RootComponent);
+
+      const vm = app.mount('#app');
+
+//      alert(vm.count); // => 4
+//      alert(RootComponent.count); // => 4
 
   </script>
 
