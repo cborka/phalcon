@@ -86,6 +86,7 @@ const Afs = {
                 
             </div>
             
+            <!---------------------- Правая колонка где показано содержимое выделенных файлов ----------------------->
             <div class="column rightcol">
 
 
@@ -123,13 +124,9 @@ const Afs = {
 
             </div>
         </div>
-
     
     </div>
- 
- 
-  `,
-
+   `,
 
     data() {
         return {
@@ -150,7 +147,6 @@ const afs = Vue.createApp(Afs);
 
 // Каталог
 afs.component('folder', {
-
     template: `
         <div class="panel-block" style="width: 100%; margin-bottom: 0px; margin-top: 0px; padding-bottom: 2px; padding-top: 2px">
             <div class="level" align="left" @dblclick="" id="td" style="width: 100%; margin-bottom: 0px; margin-top: 0px; padding-bottom: 0px; padding-top: 0px">
