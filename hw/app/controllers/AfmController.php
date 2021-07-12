@@ -1,6 +1,7 @@
 <?php
 
 use Phalcon\Mvc\Controller;
+use Phalcon\Mvc\View;
 
 class AfmController extends Controller
 {
@@ -12,5 +13,13 @@ class AfmController extends Controller
     {
 //        $this->view->users = Users::find();
     }
+
+    public function readDirAction()
+    {
+        $this->view->setRenderLevel(
+            View::LEVEL_ACTION_VIEW
+        );
+    }
+
 
 }

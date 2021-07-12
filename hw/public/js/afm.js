@@ -56,11 +56,11 @@ const Afs = {
                 
                 <!---------------------- Список файлов в папке ----------------------->
                 <div class="box"  style="padding: 0 12px 0 12px; margin: 0 12px 0 12px; background-color: hsl(0, 0%, 96%)" >
-                    <folder></folder>
-                    <folder></folder>
-                    <folder></folder>
-                    <folder></folder>
-                    <folder></folder>
+                    <folder 
+                        v-for="file in fileList"
+                        v-bind:file="file"
+                    >
+                    </folder>
                 </div>
                 
                 <!---------------------- Нижние кнопки ----------------------->
@@ -130,16 +130,38 @@ const Afs = {
 
     data() {
         return {
-            message: 'Hellow!'
+            message: 'Hellow!',
+            fileList: []
         }
     },
     mounted() {
-        this.message += ' world'
+        this.readDir();
+//        this.message += ' world'
     },
     methods: {
         changeeMessage() {
             this.message += '!'
-        }
+        },
+        readDir() {
+            axios({
+                method: 'post',
+                url: '/afm/readDir',
+                data: {
+                    dirname: 'public'
+                }
+            })
+                .then(res => {
+                    if (res.status === 200) {
+                        this.fileList = res.data;
+                    } else {
+                        alert (res.data);
+                    }
+                })
+                .catch(err => {
+                    alert(err);
+                });
+        },
+
     }
 };
 
@@ -147,6 +169,7 @@ const afs = Vue.createApp(Afs);
 
 // Каталог
 afs.component('folder', {
+    props: ['file'],
     template: `
         <div class="panel-block" style="width: 100%; margin-bottom: 0px; margin-top: 0px; padding-bottom: 2px; padding-top: 2px">
             <div class="level" align="left" @dblclick="" id="td" style="width: 100%; margin-bottom: 0px; margin-top: 0px; padding-bottom: 0px; padding-top: 0px">
@@ -156,24 +179,25 @@ afs.component('folder', {
                     <label for="checkbox" class="checkbox">{{}}</label>
 
                     <p class="level-item">
-                        {{ txt }} 
+                         {{file.name}}  
                     </p>
                 </div>
                 
                 <div class="level-right">
-                    right
+                     {{file.size + 'б'}} 
                </div>
 
             </div>
 
          </div>
-    `,
-    data() {
-        return {
-//            styleObject: stylecss,
-            txt: " hi yo"
-        }
-    }
+    `
+    //,
+//     data() {
+//         return {
+// //            styleObject: stylecss,
+//             txt: " hi yo"
+//         }
+//     }
 });
 
 // Определяем новый компонент

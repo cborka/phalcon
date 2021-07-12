@@ -1,0 +1,40 @@
+<?php
+
+    $dir = BASE_PATH . "/public/";
+    $fileinfo = [];
+    $files = [];
+    $index = 1;
+
+    // Открыть известный каталог и начать считывать его содержимое
+    if (is_dir($dir)) {
+        //использовать scandir для сортировки
+        if ($dh = opendir($dir)) {
+            while (($file = readdir($dh)) !== false) {
+//                echo "файл: $file : ";
+//                echo $type = filetype($dir . $file);
+//                echo $size === 'file' ? filesize($dir . $file) : "";
+//                echo "<br>\n";
+
+                $fileinfo['index'] = $index;
+                $fileinfo['name'] = $file;
+
+//                $size = ($type === 'file') ? filesize($dir . $file) : "0";
+                $size = filesize($dir . $file);
+                $fileinfo['size'] = $size;
+
+                $type = filetype($dir . $file);
+                if ($type === 'file') {
+                    $type = pathinfo( $file, PATHINFO_EXTENSION );
+                }
+
+                $fileinfo['type'] = $type;
+
+
+
+                $files[$index++] = $fileinfo;
+            }
+            closedir($dh);
+        }
+    }
+
+echo json_encode($files);
