@@ -8,14 +8,19 @@
     // Открыть известный каталог и начать считывать его содержимое
     if (is_dir($dir)) {
         //использовать scandir для сортировки
-        if ($dh = opendir($dir)) {
-            while (($file = readdir($dh)) !== false) {
+//        if ($dh = opendir($dir)) {
+        if ($dh = scandir($dir, 0)) {
+//            while (($file = readdir($dh)) !== false) {
+            $count = count($dh);
+            for ($i = 0; $i < $count; $i++) {
+                $file = $dh[$i];
 //                echo "файл: $file : ";
 //                echo $type = filetype($dir . $file);
 //                echo $size === 'file' ? filesize($dir . $file) : "";
 //                echo "<br>\n";
 
-                $fileinfo['index'] = $index;
+//                $fileinfo['index'] = $index;
+                $fileinfo['index'] = $i;
                 $fileinfo['name'] = $file;
 
 //                $size = ($type === 'file') ? filesize($dir . $file) : "0";
@@ -29,9 +34,9 @@
 
                 $fileinfo['type'] = $type;
 
+                $fileinfo['checked'] = false;
 
-
-                $files[$index++] = $fileinfo;
+                $files[$i] = $fileinfo;
             }
             closedir($dh);
         }

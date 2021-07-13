@@ -55,7 +55,7 @@ const Afs = {
                 </div>
                 
                 <!---------------------- Список файлов в папке ----------------------->
-                <div class="box"  style="padding: 0 12px 0 12px; margin: 0 12px 0 12px; background-color: hsl(0, 0%, 96%)" >
+                <div class="box"  style="padding: 0 12px 0 0px; margin: 0 12px 0 12px; background-color: hsl(0, 0%, 96%)" >
                     <folder 
                         v-for="file in fileList"
                         v-bind:file="file"
@@ -64,13 +64,13 @@ const Afs = {
                 </div>
                 
                 <!---------------------- Нижние кнопки ----------------------->
-                <div class="level " style="padding: 0 12px 0 12px; ">
+                <div class="level " style="padding: 0 12px 0 24px; ">
                     <div class="level-left" >
-                        <input type="checkbox" checked @change="" />
+                        <input type="checkbox" v-model="checkedAll" @change="checkAll" />
                         <label for="checkbox" class="checkbox">{{}}</label>
                         
                         <div class="buttons" style="padding: 12px; ">
-                            <button class="button is-primary is-light">Переместить</button>
+                            <button class="button is-primary is-light" @click="test2" >Переместить</button>
                             <button class="button is-primary is-light">Скачать</button>
                             <button class="button is-danger">Удалить</button>
                         </div>    
@@ -90,10 +90,15 @@ const Afs = {
             <div class="column rightcol">
 
 
-                <div class="level" style=" margin-top: 52px; padding-bottom: 12px; border-bottom: hsl(0, 0%, 86%) 1px solid; ">
-                     <div class="level-item has-text-centered">
-                        IMG.JPG
-                    </div>
+                <div class="" style=" margin: 52px 12px 0 12px; xmargin-top: 52px; padding-bottom: 12px; border-bottom: hsl(0, 0%, 86%) 1px solid; ">
+                     
+                        <content 
+                            v-for="file in fileList"
+                            v-bind:file="file"
+                        >
+                        </content>
+
+                   
                 </div>
 
                 <div class="level" style="padding-bottom: 16px;  margin: 0px; border-bottom: hsl(0, 0%, 86%) 1px solid; ">
@@ -130,8 +135,9 @@ const Afs = {
 
     data() {
         return {
-            message: 'Hellow!',
-            fileList: []
+//            message: 'Hellow!',
+            fileList: [],
+            checkedAll: false
         }
     },
     mounted() {
@@ -139,9 +145,24 @@ const Afs = {
 //        this.message += ' world'
     },
     methods: {
-        changeeMessage() {
-            this.message += '!'
+        test2() {
+            alert (this.fileList[3]['checked']);
+//            this.message += '!'
         },
+        // Переключить выделение всех файлов
+        checkAll() {
+            let count = this.fileList.length;
+//            alert(count);
+            for (let i = 0; i < count; i++) {
+                this.checkFile(this.fileList[i], this.checkedAll);
+//                this.fileList[i]['checked'] = this.checkedAll;
+            }
+        },
+        // Переключить выделение файла
+        checkFile(file, checked) {
+            file['checked'] = checked;
+        },
+        // Прочитать информацию о файлах указанного каталога
         readDir() {
             axios({
                 method: 'post',
@@ -175,7 +196,7 @@ afs.component('folder', {
             <div class="level" align="left" @dblclick="" id="td" style="width: 100%; margin-bottom: 0px; margin-top: 0px; padding-bottom: 0px; padding-top: 0px">
 
                 <div class="level-left" >
-                    <input type="checkbox" @change="" />
+                    <input type="checkbox" v-model="file.checked" @change="" />
                     <label for="checkbox" class="checkbox">{{}}</label>
 
                     <p class="level-item">
@@ -184,12 +205,35 @@ afs.component('folder', {
                 </div>
                 
                 <div class="level-right">
-                     {{file.size + 'б'}} 
+                    <span class="tag is-light">
+                         {{  (file.size / 1024).toFixed(2) + 'k, ' + file.type}} 
+                     </span>
                </div>
 
             </div>
 
          </div>
+    `
+    //,
+//     data() {
+//         return {
+// //            styleObject: stylecss,
+//             txt: " hi yo"
+//         }
+//     }
+});
+
+// Контент выделенных файлов
+afs.component('content', {
+    props: ['file'],
+    template: `
+    
+            <div v-if="file.checked" class="">
+
+                         {{file.name }}   
+
+            </div>
+
     `
     //,
 //     data() {
