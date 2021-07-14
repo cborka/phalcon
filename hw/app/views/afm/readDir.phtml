@@ -1,9 +1,10 @@
 <?php
 
-    $dir = BASE_PATH . "/public/";
+    $post =  json_decode(file_get_contents('php://input'), true);
+
+    $dir = BASE_PATH . "/afm/" . $post["dirname"] . "/";
     $fileinfo = [];
     $files = [];
-    $index = 1;
 
     // Открыть известный каталог и начать считывать его содержимое
     if (is_dir($dir)) {
@@ -14,13 +15,12 @@
             $count = count($dh);
             for ($i = 0; $i < $count; $i++) {
                 $file = $dh[$i];
-//                echo "файл: $file : ";
+//               echo "файл: $file : ";
 //                echo $type = filetype($dir . $file);
 //                echo $size === 'file' ? filesize($dir . $file) : "";
 //                echo "<br>\n";
 
-//                $fileinfo['index'] = $index;
-                $fileinfo['index'] = $i;
+                $fileinfo['id'] = $i;
                 $fileinfo['name'] = $file;
 
 //                $size = ($type === 'file') ? filesize($dir . $file) : "0";

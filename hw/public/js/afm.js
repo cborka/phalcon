@@ -30,7 +30,7 @@ const Afs = {
       
                <!---------------------- Полное имя папки ----------------------->
                <div class="level "style="margin-bottom: 0; padding-left: 12px; border-bottom: hsl(0, 0%, 86%) 1px solid; ">
-                   <div class="level-left" >... ./</div>
+                   <div class="level-left" >... {{dirname}}</div>
       
                 </div>
 
@@ -48,7 +48,7 @@ const Afs = {
 
                    <div class="level-right" >
                         <div class="buttons">
-                            <button class="button is-primary is-light">Создать папку</button>
+                            <button class="button is-primary is-light" @click="newDir">Создать папку</button>
                             <button class="button is-primary is-light">Загрузить</button>
                         </div>
                    </div>
@@ -56,7 +56,7 @@ const Afs = {
                 
                 <!---------------------- Список файлов в папке ----------------------->
                 <div class="box"  style="padding: 0 12px 0 0px; margin: 0 12px 0 12px; background-color: hsl(0, 0%, 96%)" >
-                    <folder 
+                    <folder  @opendir="openDir"
                         v-for="file in fileList"
                         v-bind:file="file"
                     >
@@ -92,9 +92,10 @@ const Afs = {
 
                 <div class="" style=" margin: 52px 12px 0 12px; xmargin-top: 52px; padding-bottom: 12px; border-bottom: hsl(0, 0%, 86%) 1px solid; ">
                      
-                        <content 
+                        <content
                             v-for="file in fileList"
-                            v-bind:file="file"
+                                :file="file"
+                                :key="file.id"
                         >
                         </content>
 
@@ -136,12 +137,13 @@ const Afs = {
     data() {
         return {
 //            message: 'Hellow!',
+            dirname: '',
             fileList: [],
             checkedAll: false
         }
     },
     mounted() {
-        this.readDir();
+        this.readDir('');
 //        this.message += ' world'
     },
     methods: {
@@ -163,12 +165,12 @@ const Afs = {
             file['checked'] = checked;
         },
         // Прочитать информацию о файлах указанного каталога
-        readDir() {
+        readDir(dir) {
             axios({
                 method: 'post',
                 url: '/afm/readDir',
                 data: {
-                    dirname: 'public'
+                    dirname: dir
                 }
             })
                 .then(res => {
@@ -181,6 +183,47 @@ const Afs = {
                 .catch(err => {
                     alert(err);
                 });
+            this.dirname = dir;
+        },
+        newDir() {
+            let dir = prompt('Введите имя новой папки', '');
+            if ((dir !== null) && (dir.trim() !== '')) {
+                this.createDir(this.dirname + '/' + dir);
+            }
+        },
+        createDir(dir) {
+            axios({
+                method: 'post',
+                url: '/afm/createDir',
+                data: {
+                    dirname: dir,
+                    id: this.fileList.length
+                }
+            })
+                .then(res => {
+                    if (res.status === 200) {
+                        alert (res.data);
+                        if (res.data !== "Error") {
+                            this.fileList[this.fileList.length] = res.data;
+//                            this.fileList[this.fileList.length]['id'] = this.fileList.length;
+                        }
+                        else {
+                            alert ('Не удалось создать папку ' + dir);
+                        }
+                    } else {
+                        alert (res.data);
+                    }
+                })
+                .catch(err => {
+                    alert(err);
+                });
+        },
+        openDir(dir) {
+            let el = event.target;
+
+            this.readDir(this.dirname + '/' + el.innerHTML);
+
+//            alert('openDir ' + el.innerHTML);
         },
 
     }
@@ -199,7 +242,7 @@ afs.component('folder', {
                     <input type="checkbox" v-model="file.checked" @change="" />
                     <label for="checkbox" class="checkbox">{{}}</label>
 
-                    <p class="level-item">
+                    <p class="level-item" @dblclick.stop="$emit('opendir')">
                          {{file.name}}  
                     </p>
                 </div>

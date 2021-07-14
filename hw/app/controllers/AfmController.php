@@ -21,5 +21,12 @@ class AfmController extends Controller
         );
     }
 
+    public function createDirAction()
+    {
+        $this->view->setRenderLevel(
+            View::LEVEL_ACTION_VIEW
+        );
+    }
+
 
 }
