@@ -30,7 +30,17 @@ const Afs = {
       
                <!---------------------- Полное имя папки ----------------------->
                <div class="level "style="margin-bottom: 0; padding-left: 12px; border-bottom: hsl(0, 0%, 86%) 1px solid; ">
-                   <div class="level-left" >... {{dirname}}</div>
+                   <!--<div class="level-left" v-html="this.dirr(dirname)"></div>-->
+                   
+                   <nav class="breadcrumb" aria-label="breadcrumbs">
+                   <ul>
+
+                    <breadc @opendir2="openDir2"
+                        v-for="dir in dirs"
+                         :dir="dir"
+                    ></breadc>
+                   </ul>
+                   </nav>
       
                 </div>
 
@@ -138,6 +148,14 @@ const Afs = {
         return {
 //            message: 'Hellow!',
             dirname: '',
+
+            // Сделать массив дирс как [{id: 0, dir: "dirname"},  ...]
+            // Потому что отлавливать по названию чревато тем, что папки разных уровней вложенности могут иметь одинаковое название
+            // Переделать функции openDir2(dir) - вместо имени передавать id из массива dirs
+            // Сделать функцию формирования массива dirs вместо this.dirs = this.dirname.split('/');
+            // Форматировать хлебные крошки как в макете
+            // Сделать в хлебных крошках переход на корневой каталог, для этого нарисовать ... и при клике возвращать ''
+            dirs: [''],
             fileList: [],
             checkedAll: false
         }
@@ -146,9 +164,19 @@ const Afs = {
         this.readDir('');
 //        this.message += ' world'
     },
+    computed: {
+//        dirsss() {
+//            d = this.dirname.split('/');
+//            return d;
+//        }
+    },
     methods: {
+        dirr(dir) {
+            return '...' + dir;
+        },
         test2() {
-            alert (this.fileList[3]['checked']);
+            alert ('qqqq');
+//            alert (this.fileList[3]['checked']);
 //            this.message += '!'
         },
         // Переключить выделение всех файлов
@@ -184,6 +212,7 @@ const Afs = {
                     alert(err);
                 });
             this.dirname = dir;
+            this.dirs = this.dirname.split('/');
         },
         newDir() {
             let dir = prompt('Введите имя новой папки', '');
@@ -218,12 +247,38 @@ const Afs = {
                     alert(err);
                 });
         },
-        openDir(dir) {
-            let el = event.target;
+        openDir2(dir) {
+            let ndir = '';
+//            alert(dir);
 
-            this.readDir(this.dirname + '/' + el.innerHTML);
+            for (let i = 1; i < this.dirs.length; i++) {
+                ndir = ndir + '/' + this.dirs[i];
 
-//            alert('openDir ' + el.innerHTML);
+                if (this.dirs[i] === dir) {
+                    alert(ndir);
+                }
+
+            }
+
+        },
+        openDir(dir, type) {
+//            let el = event.target;
+            let newdir = this.dirname;
+
+            if (type !== 'dir') {
+                return;
+            }
+
+            if (dir === '..') {
+                let n = newdir.lastIndexOf("/");
+                if (n !== -1) {
+                    newdir = newdir.slice(0, n);
+                }
+            } else if (dir !== '.') {
+                newdir = newdir + '/' + dir;
+            }
+
+            this.readDir(newdir);
         },
 
     }
@@ -242,7 +297,7 @@ afs.component('folder', {
                     <input type="checkbox" v-model="file.checked" @change="" />
                     <label for="checkbox" class="checkbox">{{}}</label>
 
-                    <p class="level-item" @dblclick.stop="$emit('opendir')">
+                    <p  class="level-item" @dblclick.stop="$emit('opendir', file.name, file.type)">
                          {{file.name}}  
                     </p>
                 </div>
@@ -264,6 +319,15 @@ afs.component('folder', {
 //             txt: " hi yo"
 //         }
 //     }
+});
+
+// Полное имя каталога с кликабельными ссылками
+afs.component('breadc', {
+    props: ['dir'],
+    template: `
+        <li class="" @click.stop="$emit('opendir2', dir)"> {{dir}} </li>
+        <!--<li class="" > 123 </li>-->
+    `
 });
 
 // Контент выделенных файлов
