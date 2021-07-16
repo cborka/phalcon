@@ -2,17 +2,18 @@
 
 $post =  json_decode(file_get_contents('php://input'), true);
 
-$dir = BASE_PATH . "/afm/" . $post["dirname"] . "/";
+//$dir = BASE_PATH . "/afm/" . $post["dirname"] . "/";
+$dir = BASE_PATH . "/../afm/" . $post["dirname"] . "/";
 
 //if (!mkdir($dir, 0777, true)) {
 if (!mkdir($dir)) {
-    echo "Error";
+    echo "Error " . $dir;
 } else {
 
     $fileinfo = [];
 
     $fileinfo['id'] = $post["id"];
-    $fileinfo['name'] = $post["dirname"];
+    $fileinfo['name'] = basename($post["dirname"]);
     $fileinfo['size'] = "0";
     $fileinfo['type'] = "dir";
     $fileinfo['checked'] = true;

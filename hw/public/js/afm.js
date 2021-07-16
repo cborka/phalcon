@@ -30,18 +30,19 @@ const Afs = {
       
                <!---------------------- Полное имя папки ----------------------->
                <div class="level "style="margin-bottom: 0; padding-left: 12px; border-bottom: hsl(0, 0%, 86%) 1px solid; ">
-                   <!--<div class="level-left" v-html="this.dirr(dirname)"></div>-->
-                   
-                   <nav class="breadcrumb" aria-label="breadcrumbs">
-                   <ul>
+                   <div class="level-left">
+                   <!--<nav class="breadcrumb" aria-label="breadcrumbs">-->
+                   <!--<ul>-->
 
                     <breadc @opendir2="openDir2"
                         v-for="dir in dirs"
                          :dir="dir"
+                         :key="dir.id"
                     ></breadc>
-                   </ul>
-                   </nav>
-      
+
+                   <!--</ul>-->
+                   <!--</nav>-->
+                    </div>
                 </div>
 
                 <!---------------------- Верхние кнопки ----------------------->
@@ -82,7 +83,7 @@ const Afs = {
                         <div class="buttons" style="padding: 12px; ">
                             <button class="button is-primary is-light" @click="test2" >Переместить</button>
                             <button class="button is-primary is-light">Скачать</button>
-                            <button class="button is-danger">Удалить</button>
+                            <button class="button is-danger" @click="deleteChecked">Удалить</button>
                         </div>    
                     </div>
 
@@ -146,23 +147,25 @@ const Afs = {
 
     data() {
         return {
-//            message: 'Hellow!',
+            // Полное имя текущего каталога
             dirname: '',
 
-            // Сделать массив дирс как [{id: 0, dir: "dirname"},  ...]
-            // Потому что отлавливать по названию чревато тем, что папки разных уровней вложенности могут иметь одинаковое название
-            // Переделать функции openDir2(dir) - вместо имени передавать id из массива dirs
-            // Сделать функцию формирования массива dirs вместо this.dirs = this.dirname.split('/');
-            // Форматировать хлебные крошки как в макете
-            // Сделать в хлебных крошках переход на корневой каталог, для этого нарисовать ... и при клике возвращать ''
-            dirs: [''],
+            // Массив имён каталогов входящих в полное имя текущего каталога
+            // нужен для формирования полного имени в формате "хлебных крошек"
+            // то есть кликабельных ссылок для открытия каталога
+            // Сделан для того, чтобы ссылаться по индексу, а не по имени, так как имена могут быть одинаковые
+            // [{id: 0, name: "dirname"},  ...]
+            dirs: [],
+
+            // Массив информации о файлах текущего каталога
+            // [{id: 0, name: "filename", size: 123, type: "txt", checked: true},  ...]
             fileList: [],
+
             checkedAll: false
         }
     },
     mounted() {
         this.readDir('');
-//        this.message += ' world'
     },
     computed: {
 //        dirsss() {
@@ -171,28 +174,26 @@ const Afs = {
 //        }
     },
     methods: {
-        dirr(dir) {
-            return '...' + dir;
-        },
         test2() {
             alert ('qqqq');
 //            alert (this.fileList[3]['checked']);
 //            this.message += '!'
         },
+
         // Переключить выделение всех файлов
         checkAll() {
             let count = this.fileList.length;
-//            alert(count);
             for (let i = 0; i < count; i++) {
                 this.checkFile(this.fileList[i], this.checkedAll);
-//                this.fileList[i]['checked'] = this.checkedAll;
             }
         },
+
         // Переключить выделение файла
         checkFile(file, checked) {
             file['checked'] = checked;
         },
-        // Прочитать информацию о файлах указанного каталога
+
+        // Прочитать информацию о файлах каталога dir
         readDir(dir) {
             axios({
                 method: 'post',
@@ -212,14 +213,31 @@ const Afs = {
                     alert(err);
                 });
             this.dirname = dir;
-            this.dirs = this.dirname.split('/');
+            this.dirs = this.makeDirsArray(this.dirname);
         },
+
+        // Создать массив имен каталогов входящих в полное имя открытого каталога
+        makeDirsArray(dirname) {
+            let names = dirname.split('/');
+
+            let arr = [{id: 0, name: '...'}];
+
+            for (let i = 1; i < names.length; i++) {
+                arr[i] = {id: i, name: names[i]};
+            }
+//            alert(JSON.stringify(arr));
+            return arr;
+        },
+
+        // Создать новый каталог
         newDir() {
             let dir = prompt('Введите имя новой папки', '');
             if ((dir !== null) && (dir.trim() !== '')) {
                 this.createDir(this.dirname + '/' + dir);
             }
         },
+
+        // Создать новый каталог с именем dir
         createDir(dir) {
             axios({
                 method: 'post',
@@ -231,10 +249,10 @@ const Afs = {
             })
                 .then(res => {
                     if (res.status === 200) {
-                        alert (res.data);
-                        if (res.data !== "Error") {
+//                        alert (res.data.substr(0,5));
+
+                        if (typeof(res.data) === "object") {
                             this.fileList[this.fileList.length] = res.data;
-//                            this.fileList[this.fileList.length]['id'] = this.fileList.length;
                         }
                         else {
                             alert ('Не удалось создать папку ' + dir);
@@ -247,27 +265,24 @@ const Afs = {
                     alert(err);
                 });
         },
-        openDir2(dir) {
+
+        // Открыть каталог при клике на "хлебную крошку"
+        openDir2(id) {
             let ndir = '';
-//            alert(dir);
-
-            for (let i = 1; i < this.dirs.length; i++) {
-                ndir = ndir + '/' + this.dirs[i];
-
-                if (this.dirs[i] === dir) {
-                    alert(ndir);
-                }
-
+            for (let i = 1; i <= id; i++) {
+                ndir = ndir + '/' + this.dirs[i].name;
             }
-
+            this.readDir(ndir);
         },
+
+        // Открыть каталог по двойному клику
         openDir(dir, type) {
-//            let el = event.target;
-            let newdir = this.dirname;
 
             if (type !== 'dir') {
                 return;
             }
+
+            let newdir = this.dirname;
 
             if (dir === '..') {
                 let n = newdir.lastIndexOf("/");
@@ -281,17 +296,40 @@ const Afs = {
             this.readDir(newdir);
         },
 
+        deleteChecked() {
+            let s = '';
+
+            let count = this.fileList.length;
+
+            for (let i = 0; i < count; i++) {
+                if (! this.fileList[i].checked) {
+                    continue;
+                }
+
+                s += (this.fileList[i].name + ', ');
+            }
+alert(s);
+
+        },
+
+        deleteFile(id) {
+
+        }
+
+
     }
 };
 
 const afs = Vue.createApp(Afs);
 
-// Каталог
+// Компонент (строка) каталога файлов
+// Если это каталог, то он открывается по двойному клику
+// Содержит чекбокс для выделения
 afs.component('folder', {
     props: ['file'],
     template: `
         <div class="panel-block" style="width: 100%; margin-bottom: 0px; margin-top: 0px; padding-bottom: 2px; padding-top: 2px">
-            <div class="level" align="left" @dblclick="" id="td" style="width: 100%; margin-bottom: 0px; margin-top: 0px; padding-bottom: 0px; padding-top: 0px">
+            <div class="level" align="left" id="td" style="width: 100%; margin-bottom: 0px; margin-top: 0px; padding-bottom: 0px; padding-top: 0px">
 
                 <div class="level-left" >
                     <input type="checkbox" v-model="file.checked" @change="" />
@@ -304,29 +342,35 @@ afs.component('folder', {
                 
                 <div class="level-right">
                     <span class="tag is-light">
-                         {{  (file.size / 1024).toFixed(2) + 'k, ' + file.type}} 
+                         <!--{{  (file.size / 1024).toFixed(2) + 'k, ' + file.type}} -->
+                         {{  ((file.type == 'dir') ? file.size : 
+                                (
+                                    (file.size < 1000) ?
+                                        ( (file.size).toFixed(0)+'b' ) :
+                                        ( (file.size / 1024).toFixed(1)+'k' )
+                                )
+                            ) +
+                            ', ' + file.type
+                         }} 
                      </span>
                </div>
-
+               
             </div>
-
          </div>
     `
-    //,
+//   ,
 //     data() {
 //         return {
-// //            styleObject: stylecss,
-//             txt: " hi yo"
 //         }
 //     }
 });
 
-// Полное имя каталога с кликабельными ссылками
+// Кликабельный компонент полного имени каталога (хлебная крошка)
 afs.component('breadc', {
     props: ['dir'],
     template: `
-        <li class="" @click.stop="$emit('opendir2', dir)"> {{dir}} </li>
-        <!--<li class="" > 123 </li>-->
+        <span class="" @click.stop="$emit('opendir2', dir.id)"> {{dir.name}}/ </span>
+        <!--<li class="" @click.stop="$emit('opendir2', dir.id)"> {{dir.name}} </li>-->
     `
 });
 
@@ -342,29 +386,12 @@ afs.component('content', {
             </div>
 
     `
-    //,
+//    ,
 //     data() {
 //         return {
-// //            styleObject: stylecss,
-//             txt: " hi yo"
 //         }
 //     }
 });
-
-// Определяем новый компонент
-afs.component('comp', {
-
-    template: `
-       <span :style="styleObject">Это компонентa {{txt}}</span>
-    `,
-    data() {
-        return {
-            styleObject: stylecss,
-            txt: " hi yo"
-        }
-    }
-});
-
 
 
 afs.mount('#afm-app');

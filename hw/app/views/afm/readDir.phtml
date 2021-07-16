@@ -2,7 +2,8 @@
 
     $post =  json_decode(file_get_contents('php://input'), true);
 
-    $dir = BASE_PATH . "/afm/" . $post["dirname"] . "/";
+//    $dir = BASE_PATH . "/public/" . $post["dirname"] . "/";
+    $dir = BASE_PATH . "/../afm/" . $post["dirname"] . "/";
     $fileinfo = [];
     $files = [];
 
@@ -15,25 +16,27 @@
             $count = count($dh);
             for ($i = 0; $i < $count; $i++) {
                 $file = $dh[$i];
-//               echo "файл: $file : ";
-//                echo $type = filetype($dir . $file);
-//                echo $size === 'file' ? filesize($dir . $file) : "";
-//                echo "<br>\n";
 
                 $fileinfo['id'] = $i;
                 $fileinfo['name'] = $file;
 
 //                $size = ($type === 'file') ? filesize($dir . $file) : "0";
-                $size = filesize($dir . $file);
-                $fileinfo['size'] = $size;
+                $fileinfo['size'] = filesize($dir . $file);;
 
                 $type = filetype($dir . $file);
-                if ($type === 'file') {
+
+                if ($type === 'dir') {
+                    $dir2 = $dir . $file . '/';
+                    if (is_dir($dir2)) {
+                        if ($dh2 = scandir($dir2, 0)) {
+                            $fileinfo['size'] =  count($dh2) - 2;
+                        }
+                    }
+                } else { // if ($type === 'file') {
                     $type = pathinfo( $file, PATHINFO_EXTENSION );
                 }
 
-                $fileinfo['type'] = $type;
-
+                $fileinfo['type'] =  $type;
                 $fileinfo['checked'] = false;
 
                 $files[$i] = $fileinfo;
