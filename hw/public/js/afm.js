@@ -305,15 +305,15 @@ const Afs = {
                 if (! this.fileList[i].checked) {
                     continue;
                 }
-
-                s += (this.fileList[i].name + ', ');
+                deleteFile(this.fileList[i].id);
+//                s += (this.fileList[i].name + ', ');
             }
-alert(s);
+
 
         },
 
         deleteFile(id) {
-
+            alert(id);
         }
 
 
