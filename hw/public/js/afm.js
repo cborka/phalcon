@@ -29,15 +29,16 @@ const Afs = {
             <div class="column is-two-thirds lefttcol">
       
                <!---------------------- Полное имя папки ----------------------->
-               <div class="level "style="margin-bottom: 0; padding-left: 12px; border-bottom: hsl(0, 0%, 86%) 1px solid; ">
+               <div class="level" style="padding-left: 12px; border-bottom: hsl(0, 0%, 86%) 1px solid; ">
                    <div class="level-left">
                    <!--<nav class="breadcrumb" aria-label="breadcrumbs">-->
                    <!--<ul>-->
 
-                    <breadc @opendir2="openDir2"
+                    <breadc class="" @opendir2="openDir2"
                         v-for="dir in dirs"
                          :dir="dir"
                          :key="dir.id"
+                         style="margin: 0; padding: 0;"
                     ></breadc>
 
                    <!--</ul>-->
@@ -60,7 +61,13 @@ const Afs = {
                    <div class="level-right" >
                         <div class="buttons">
                             <button class="button is-primary is-light" @click="newDir">Создать папку</button>
-                            <button class="button is-primary is-light">Загрузить</button>
+                            <!--<button class="button is-primary is-light">Загрузить</button>-->
+                            
+<div class="button is-primary is-light ">
+    <input class="file-input" type="file" name="resume">
+        Загрузить
+</div>
+
                         </div>
                    </div>
                 </div>
@@ -154,12 +161,10 @@ const Afs = {
             // нужен для формирования полного имени в формате "хлебных крошек"
             // то есть кликабельных ссылок для открытия каталога
             // Сделан для того, чтобы ссылаться по индексу, а не по имени, так как имена могут быть одинаковые
-            // [{id: 0, name: "dirname"},  ...]
-            dirs: [],
+            dirs: [],       // [{id: 0, name: "dirname"},  ...]
 
             // Массив информации о файлах текущего каталога
-            // [{id: 0, name: "filename", size: 123, type: "txt", checked: true},  ...]
-            fileList: [],
+            fileList: [],   // [{id: 0, name: "filename", size: 123, type: "txt", checked: true},  ...]
 
             checkedAll: false
         }
@@ -301,12 +306,25 @@ const Afs = {
 
             let count = this.fileList.length;
 
+            // Первый проход проверяю на возможность удаления
             for (let i = 0; i < count; i++) {
                 if (! this.fileList[i].checked) {
                     continue;
                 }
-                deleteFile(this.fileList[i].id);
-//                s += (this.fileList[i].name + ', ');
+                //[{id: 0, name: "filename", size: 123, type: "txt", checked: true},
+                if ((this.fileList[i].type === 'dir') && (this.fileList[i].size !== 0)) {
+                    alert ('Каталог ' + this.fileList[i].name + ' не пуст!');
+                    return;
+                }
+            }
+
+            // Второй проход, удаляю
+            for (let i = 0; i < count; i++) {
+                if (! this.fileList[i].checked) {
+                    continue;
+                }
+
+                this.deleteFile(this.fileList[i].id);
             }
 
 
@@ -314,6 +332,40 @@ const Afs = {
 
         deleteFile(id) {
             alert(id);
+            axios({
+                method: 'post',
+                url: '/afm/deleteFile',
+                data: {
+                    filename: this.fileList[id].name,
+                    type: this.fileList[id].type
+                }
+            })
+                .then(res => {
+                    if (res.status === 200) {
+                        alert (res.data);
+
+                        let file = 'файл';
+                        if (this.fileList[id].type === 'dir') {
+                            file = 'каталог';
+                        }
+
+                        if (res.data) {
+
+                            // удалить запись из массива
+
+                            alert (file + ' ' + this.fileList[id].name + ' удалён!');
+                        }
+                        else {
+                            alert ('Не удалось удалить ' + file + ' ' + this.fileList[id].name);
+                        }
+                    } else {
+                        alert ('Не удалось удалить ' + this.fileList[id].name + ', статус = ' + res.status);
+                    }
+                })
+                .catch(err => {
+                    alert(err);
+                });
+
         }
 
 
@@ -369,7 +421,7 @@ afs.component('folder', {
 afs.component('breadc', {
     props: ['dir'],
     template: `
-        <span class="" @click.stop="$emit('opendir2', dir.id)"> {{dir.name}}/ </span>
+        <span class="button is-white" @click.stop="$emit('opendir2', dir.id)" style="margin: 0; padding: 0;"> {{dir.name}}/ </span>
         <!--<li class="" @click.stop="$emit('opendir2', dir.id)"> {{dir.name}} </li>-->
     `
 });

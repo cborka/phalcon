@@ -28,5 +28,12 @@ class AfmController extends Controller
         );
     }
 
+    public function deleteFileAction()
+    {
+        $this->view->setRenderLevel(
+            View::LEVEL_ACTION_VIEW
+        );
+    }
+
 
 }
