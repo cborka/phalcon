@@ -14,17 +14,15 @@
         if ($dh = scandir($dir, 0)) {
 //            while (($file = readdir($dh)) !== false) {
             $count = count($dh);
-            for ($i = 0; $i < $count; $i++) {
+            for ($i = 1; $i < $count; $i++) {
                 $file = $dh[$i];
 
                 $fileinfo['id'] = $i;
                 $fileinfo['name'] = $file;
-
-//                $size = ($type === 'file') ? filesize($dir . $file) : "0";
+                
                 $fileinfo['size'] = filesize($dir . $file);;
 
                 $type = filetype($dir . $file);
-
                 if ($type === 'dir') {
                     $dir2 = $dir . $file . '/';
                     if (is_dir($dir2)) {

@@ -301,9 +301,13 @@ const Afs = {
             this.readDir(newdir);
         },
 
+        // Удалить выделенные файлы и каталоги
         deleteChecked() {
-            let s = '';
+            if (!confirm('Удалить выделенные файлы и каталоги?')) {
+                return;
+            }
 
+            let s = '';
             let count = this.fileList.length;
 
             // Первый проход проверяю на возможность удаления
@@ -331,29 +335,26 @@ const Afs = {
         },
 
         deleteFile(id) {
-            alert(id);
             axios({
                 method: 'post',
                 url: '/afm/deleteFile',
                 data: {
-                    filename: this.fileList[id].name,
+                    filename: this.dirname + '/' + this.fileList[id].name,
                     type: this.fileList[id].type
                 }
             })
                 .then(res => {
                     if (res.status === 200) {
-                        alert (res.data);
-
                         let file = 'файл';
                         if (this.fileList[id].type === 'dir') {
                             file = 'каталог';
                         }
 
                         if (res.data) {
+//                            alert (file + ' ' + this.fileList[id].name + ' удалён!');
 
                             // удалить запись из массива
-
-                            alert (file + ' ' + this.fileList[id].name + ' удалён!');
+                            this.fileList.splice(id, 1);
                         }
                         else {
                             alert ('Не удалось удалить ' + file + ' ' + this.fileList[id].name);

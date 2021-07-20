@@ -14,11 +14,9 @@ if (!mkdir($dir)) {
 
     $fileinfo['id'] = $post["id"];
     $fileinfo['name'] = basename($post["dirname"]);
-    $fileinfo['size'] = "0";
+    $fileinfo['size'] = 0;
     $fileinfo['type'] = "dir";
     $fileinfo['checked'] = true;
 
     echo json_encode($fileinfo);
 }
-
-

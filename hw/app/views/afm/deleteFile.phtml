@@ -4,7 +4,6 @@ $post =  json_decode(file_get_contents('php://input'), true);
 
 $fullname = BASE_PATH . "/../afm/" . $post["filename"] ;
 
-
 if (is_dir($fullname)) {
     $result = rmdir($fullname);
 } else {
