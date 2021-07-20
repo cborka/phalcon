@@ -64,7 +64,7 @@ const Afs = {
                             <!--<button class="button is-primary is-light">Загрузить</button>-->
                             
 <div class="button is-primary is-light ">
-    <input class="file-input" type="file" name="resume">
+    <input class="file-input" type="file" name="resume" multiple>
         Загрузить
 </div>
 
