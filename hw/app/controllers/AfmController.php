@@ -35,5 +35,12 @@ class AfmController extends Controller
         );
     }
 
+    public function loadFilesAction()
+    {
+        $this->view->setRenderLevel(
+            View::LEVEL_ACTION_VIEW
+        );
+    }
+
 
 }

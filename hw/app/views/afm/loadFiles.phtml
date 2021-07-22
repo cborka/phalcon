@@ -1,0 +1,11 @@
+<?php
+
+ $post =  json_decode(file_get_contents('php://input'), true);
+
+ ob_start();
+    var_dump($_FILES);
+//    echo "jdlskjlkjslkj";
+$content = ob_get_clean();
+
+echo $content;
+//var_dump($post["dirname"]);

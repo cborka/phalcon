@@ -63,11 +63,8 @@ const Afs = {
                             <button class="button is-primary is-light" @click="newDir">Создать папку</button>
                             <!--<button class="button is-primary is-light">Загрузить</button>-->
                             
-<div class="button is-primary is-light ">
-    <input class="file-input" type="file" name="resume" multiple>
-        Загрузить
-</div>
-
+                            <load-files></load-files>
+                            
                         </div>
                    </div>
                 </div>
@@ -125,18 +122,18 @@ const Afs = {
                      <div class="block " style="margin-top: 0px; margin-left: 12px; border: red 0px solid; ">
                     <!--<div class="box" style=" border: red 1px solid; ">-->
                     
-                    <figure class="image " style="display: inline-block; margin: 8px; border: navy 0px solid; width: 43%">
-                        <img src="/img/logo-earth.jpg" >
-                    </figure>
-                         
-                    <figure class="image " style="display: inline-block; margin: 8px; border: navy 0px solid;  width: 43%">
-                        <img src="/img/logo-earth.jpg">
-                    </figure>
-                         
-                    <figure class="image " style="display: inline-block; margin: 8px; border: navy 0px solid; width: 43%">
-                        <img src="/img/logo-earth.jpg" >
-                    </figure>
-                         
+                    <!--<figure class="image " style="display: inline-block; margin: 8px; border: navy 0px solid; width: 43%">-->
+                        <!--<img src="/img/logo-earth.jpg" >-->
+                    <!--</figure>-->
+                         <!---->
+                    <!--<figure class="image " style="display: inline-block; margin: 8px; border: navy 0px solid;  width: 43%">-->
+                        <!--<img src="/img/logo-earth.jpg">-->
+                    <!--</figure>-->
+                         <!---->
+                    <!--<figure class="image " style="display: inline-block; margin: 8px; border: navy 0px solid; width: 43%">-->
+                        <!--<img src="/img/logo-earth.jpg" >-->
+                    <!--</figure>-->
+                         <!---->
                     </div>
                 </div>
                 
@@ -426,6 +423,65 @@ afs.component('breadc', {
         <!--<li class="" @click.stop="$emit('opendir2', dir.id)"> {{dir.name}} </li>-->
     `
 });
+
+
+// Контент загрузки файлов
+afs.component('load-files', {
+    props: ['file'],
+    template: `
+            <!--<input type="file" id="file" ref="file" v-on:change="handleFileUpload()" multiple >-->
+            <!--<button v-on:click="submitFile()">Submit</button>-->
+
+            <div class="button is-primary is-light ">
+                <input class="file-input" type="file" id="files" ref="files" v-on:change="handleFileUpload()" multiple >
+                <!--<input id="file-input" class="file-input" type="file" name="resume" multiple>-->
+                    Загрузить
+                    
+            </div>
+             <button v-on:click="submitFiles()">Submit</button>
+             <
+            
+    `
+    ,
+    data() {
+        return {
+            files: [],
+            ret: ''
+        }
+    },
+    methods: {
+        handleFileUpload(){
+            this.files = this.$refs.files.files;
+        },
+        submitFiles(){
+            let formData = new FormData();
+            for( var i = 0; i < this.files.length; i++ ){
+                let file = this.files[i];
+                formData.append('files[' + i + ']', file);
+            }
+
+//            formData.append('file', this.file[0]);
+//            formData.append('file1', this.file[1]);
+            axios.post( '/afm/loadFiles',
+                formData,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }
+            ).then(res => {
+                alert('OK ' + res.data);
+//                console.log('SUCCESS!!');
+            })
+            .catch(err =>{
+                alert('ERR ' + err);
+            });
+
+        },
+    }
+});
+
+
 
 // Контент выделенных файлов
 afs.component('content', {
