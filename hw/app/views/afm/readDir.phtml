@@ -14,10 +14,14 @@
         if ($dh = scandir($dir, 0)) {
 //            while (($file = readdir($dh)) !== false) {
             $count = count($dh);
+            // Здесь я убрал первый элемент . (точку)
+            // для этого начал цикл со второго элемента (с индекса 1)
+            // но для JavaScript нумерую массив с 0 (с нуля)
+            // потому что иначе он не воспримет это не как массив, а как объект, а это уже совсем другие методы работы.
             for ($i = 1; $i < $count; $i++) {
                 $file = $dh[$i];
 
-                $fileinfo['id'] = $i;
+                $fileinfo['id'] = $i - 1;
                 $fileinfo['name'] = $file;
                 
                 $fileinfo['size'] = filesize($dir . $file);;
@@ -37,7 +41,7 @@
                 $fileinfo['type'] =  $type;
                 $fileinfo['checked'] = false;
 
-                $files[$i] = $fileinfo;
+                $files[$i - 1] = $fileinfo;
             }
             closedir($dh);
         }

@@ -26,6 +26,7 @@ const Afs = {
         </div>
     
         <div class="columns" style="margin: 0; height: 600px; ">
+            <!--<div class="column is-two-thirds lefttcol">-->
             <div class="column is-two-thirds lefttcol">
       
                <!---------------------- Полное имя папки ----------------------->
@@ -63,7 +64,7 @@ const Afs = {
                             <button class="button is-primary is-light" @click="newDir">Создать папку</button>
                             <!--<button class="button is-primary is-light">Загрузить</button>-->
                             
-                            <load-files></load-files>
+                            <load-files :dirname="dirname" :inform="inform" :readDir="readDir"></load-files>
                             
                         </div>
                    </div>
@@ -113,7 +114,6 @@ const Afs = {
                                 :key="file.id"
                         >
                         </content>
-
                    
                 </div>
 
@@ -143,6 +143,14 @@ const Afs = {
                     </div>
                 </div>
 
+                <div class="level-left " style=" padding: 12px 12px 12px 24px; border-bottom: hsl(0, 0%, 86%) 1px solid; ">
+                     <div class="level-item ">
+                        <textarea v-html="info" cols=35 >
+                        </textarea>
+                    </div>
+                </div>
+
+
             </div>
         </div>
     
@@ -162,8 +170,12 @@ const Afs = {
 
             // Массив информации о файлах текущего каталога
             fileList: [],   // [{id: 0, name: "filename", size: 123, type: "txt", checked: true},  ...]
+            fileList2: [],   // [{id: 0, name: "filename", size: 123, type: "txt", checked: true},  ...]
 
-            checkedAll: false
+            checkedAll: false,
+
+            // Выводимые справ снизу сообщения
+            info: 'Hi'
         }
     },
     mounted() {
@@ -180,6 +192,10 @@ const Afs = {
             alert ('qqqq');
 //            alert (this.fileList[3]['checked']);
 //            this.message += '!'
+        },
+
+        inform(message) {
+            this.info = message;
         },
 
         // Переключить выделение всех файлов
@@ -207,6 +223,8 @@ const Afs = {
                 .then(res => {
                     if (res.status === 200) {
                         this.fileList = res.data;
+//                        this.inform( JSON.stringify(res.data));
+//                        alert(Object.keys(this.fileList).length);
                     } else {
                         alert (res.data);
                     }
@@ -296,6 +314,7 @@ const Afs = {
             }
 
             this.readDir(newdir);
+
         },
 
         // Удалить выделенные файлы и каталоги
@@ -306,7 +325,6 @@ const Afs = {
 
             let s = '';
             let count = this.fileList.length;
-
             // Первый проход проверяю на возможность удаления
             for (let i = 0; i < count; i++) {
                 if (! this.fileList[i].checked) {
@@ -324,10 +342,17 @@ const Afs = {
                 if (! this.fileList[i].checked) {
                     continue;
                 }
-
-                this.deleteFile(this.fileList[i].id);
+//                try {
+                    this.deleteFile(this.fileList[i].id);
+//                }
             }
 
+            // Чтобы лишний раз не лезть на сервер
+            // здесь вместо перечитывания надо просто отфильтровать массив оставив только !this.fileList[i].checked
+            // хотя лишний раз перечитать надежнее
+            // но успевает перечитать до того как все файлы удалятся, такой вот асинхрон
+            // А зачем удалять по одному, можно же весь список сразу отправить, да я гений, но не сегодня.
+            this.readDir(this.dirname);
 
         },
 
@@ -349,9 +374,11 @@ const Afs = {
 
                         if (res.data) {
 //                            alert (file + ' ' + this.fileList[id].name + ' удалён!');
+//                            this.inform(res.data);
 
                             // удалить запись из массива
-                            this.fileList.splice(id, 1);
+                            //  -- удаление сбивается при удалении нескольких файлов, индексты перестают совпадать
+                            // this.fileList.splice(id, 1);
                         }
                         else {
                             alert ('Не удалось удалить ' + file + ' ' + this.fileList[id].name);
@@ -427,7 +454,7 @@ afs.component('breadc', {
 
 // Контент загрузки файлов
 afs.component('load-files', {
-    props: ['file'],
+    props: ['dirname', 'inform', 'readDir'],
     template: `
             <!--<input type="file" id="file" ref="file" v-on:change="handleFileUpload()" multiple >-->
             <!--<button v-on:click="submitFile()">Submit</button>-->
@@ -438,9 +465,7 @@ afs.component('load-files', {
                     Загрузить
                     
             </div>
-             <button v-on:click="submitFiles()">Submit</button>
-             <
-            
+             <!--<button v-on:click="submitFiles()">Submit</button>-->
     `
     ,
     data() {
@@ -452,16 +477,21 @@ afs.component('load-files', {
     methods: {
         handleFileUpload(){
             this.files = this.$refs.files.files;
+            this.submitFiles();
         },
+
         submitFiles(){
             let formData = new FormData();
+
+            formData.append('dirname', this.dirname);
+
             for( var i = 0; i < this.files.length; i++ ){
                 let file = this.files[i];
-                formData.append('files[' + i + ']', file);
+//                formData.append('files[' + i + ']', file);
+                formData.append('files[' + i + ']', this.files[i]);
+//                formData.append('files' + i, file);
             }
 
-//            formData.append('file', this.file[0]);
-//            formData.append('file1', this.file[1]);
             axios.post( '/afm/loadFiles',
                 formData,
                 {
@@ -470,7 +500,10 @@ afs.component('load-files', {
                     }
                 }
             ).then(res => {
-                alert('OK ' + res.data);
+                // alert('OK ' + res.data);
+                this.readDir(this.dirname);
+//                this.inform(res.data);
+//                this.ret = res.data;
 //                console.log('SUCCESS!!');
             })
             .catch(err =>{
