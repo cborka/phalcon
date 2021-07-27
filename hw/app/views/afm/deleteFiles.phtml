@@ -1,0 +1,27 @@
+<?php
+
+$post =  json_decode(file_get_contents('php://input'), true);
+
+$dirname = $post["dirname"];
+$files = json_decode($post["files"]);
+
+//echo $post["files"];
+//echo count($files);
+//echo $dirname . '<br>';
+
+$result = true;
+
+$count = count($files);
+for ($i = 0; $i < $count; $i++) {
+    $fullname = BASE_PATH . "/../afm" . $dirname . '/' . $files[$i];
+    if (is_dir($fullname)) {
+//        echo $fullname . ' dir<br>';
+        $result = rmdir($fullname) && $result;
+    } else {
+//        echo $fullname . ' file<br>';
+        $result = unlink($fullname) && $result;
+    }
+
+}
+
+echo json_encode($result);

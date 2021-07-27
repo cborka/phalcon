@@ -14,6 +14,9 @@ class AfmController extends Controller
 //        $this->view->users = Users::find();
     }
 
+    /*
+     * Прочесть каталог
+     */
     public function readDirAction()
     {
         $this->view->setRenderLevel(
@@ -21,6 +24,9 @@ class AfmController extends Controller
         );
     }
 
+    /*
+     * Создать каталог
+     */
     public function createDirAction()
     {
         $this->view->setRenderLevel(
@@ -28,6 +34,9 @@ class AfmController extends Controller
         );
     }
 
+    /*
+     * Удалить файл
+     */
     public function deleteFileAction()
     {
         $this->view->setRenderLevel(
@@ -35,6 +44,29 @@ class AfmController extends Controller
         );
     }
 
+    /*
+     * Удалить файлы
+     */
+    public function deleteFilesAction()
+    {
+        $this->view->setRenderLevel(
+            View::LEVEL_ACTION_VIEW
+        );
+    }
+
+    /*
+     * Загрузить файлы
+     */
+    public function uploadFilesAction()
+    {
+        $this->view->setRenderLevel(
+            View::LEVEL_ACTION_VIEW
+        );
+    }
+
+    /*
+     * Скачать файлы
+     */
     public function loadFilesAction()
     {
         $this->view->setRenderLevel(

@@ -87,7 +87,7 @@ const Afs = {
                         
                         <div class="buttons" style="padding: 12px; ">
                             <button class="button is-primary is-light" @click="test2" >Переместить</button>
-                            <button class="button is-primary is-light">Скачать</button>
+                            <button class="button is-primary is-light" @click="loadChecked">Скачать</button>
                             <button class="button is-danger" @click="deleteChecked">Удалить</button>
                         </div>    
                     </div>
@@ -145,8 +145,9 @@ const Afs = {
 
                 <div class="level-left " style=" padding: 12px 12px 12px 24px; border-bottom: hsl(0, 0%, 86%) 1px solid; ">
                      <div class="level-item ">
-                        <textarea v-html="info" cols=35 >
-                        </textarea>
+                        <!--<textarea v-html="info" cols=35 >-->
+                        <!--</textarea>-->
+                        <p v-html="info"></p>
                     </div>
                 </div>
 
@@ -170,7 +171,7 @@ const Afs = {
 
             // Массив информации о файлах текущего каталога
             fileList: [],   // [{id: 0, name: "filename", size: 123, type: "txt", checked: true},  ...]
-            fileList2: [],   // [{id: 0, name: "filename", size: 123, type: "txt", checked: true},  ...]
+//            fileList2: [],   // [{id: 0, name: "filename", size: 123, type: "txt", checked: true},  ...]
 
             checkedAll: false,
 
@@ -195,6 +196,7 @@ const Afs = {
         },
 
         inform(message) {
+//            this.info = '<br>'+message+'<br>xxx';
             this.info = message;
         },
 
@@ -317,11 +319,69 @@ const Afs = {
 
         },
 
+        // Скачать выделенные файлы и каталоги
+        loadChecked() {
+            let files = [];
+            let s = '';
+            let count = this.fileList.length;
+
+            // Собираю в массив имена файлов, которые надо скачать
+            for (let i = 0; i < count; i++) {
+                if (! this.fileList[i].checked) {
+                    continue;
+                }
+                files.push(this.fileList[i].name);
+            }
+
+            location.href = '/afm/loadFiles';
+
+//            this.loadFiles(files);
+        },
+        loadFiles(files) {
+            axios({
+                method: 'post',
+                url: '/afm/loadFiles',
+                data: {
+//                    dirname: this.dirname,
+//                    files:  JSON.stringify(files)
+//                    type: this.fileList[id].type
+                }
+            })
+                .then(res => {
+                    if (res.status === 200) {
+
+                        alert('> Файлы скачаны!' + res.data);
+
+
+//                         if (res.data) {
+//
+//                             let count = this.fileList.length;
+//                             for (let i = 0; i < count; i++) {
+//                                 if (this.fileList[i].checked)
+//                                     this.fileList[i].checked = false;
+//                             }
+//
+//                             this.inform(res.data);
+// //                            alert (file + ' ' + this.fileList[id].name + ' удалён!');
+//                         }
+//                         else {
+//                         }
+                    } else {
+                        alert ('Не удалось скачать файлы, статус = ' + res.status);
+                    }
+                })
+                .catch(err => {
+                    alert(err);
+                });
+        },
+
         // Удалить выделенные файлы и каталоги
         deleteChecked() {
             if (!confirm('Удалить выделенные файлы и каталоги?')) {
                 return;
             }
+
+            let files = [];
 
             let s = '';
             let count = this.fileList.length;
@@ -337,23 +397,87 @@ const Afs = {
                 }
             }
 
-            // Второй проход, удаляю
+//             // Второй проход, удаляю
+//             for (let i = 0; i < count; i++) {
+//                 if (! this.fileList[i].checked) {
+//                     continue;
+//                 }
+// //                try {
+//                     this.deleteFile(this.fileList[i].id);
+// //                }
+//             }
+
+            // Второй проход, собираю в массив имена файлов, которые надо удалить
             for (let i = 0; i < count; i++) {
                 if (! this.fileList[i].checked) {
                     continue;
                 }
-//                try {
-                    this.deleteFile(this.fileList[i].id);
-//                }
+                files.push(this.fileList[i].name);
             }
+
+            this.deleteFiles(files);
+
+//            fileList: [],   // [{id: 0, name: "filename", size: 123, type: "txt", checked: true},  ...]
+
+            // let newFileList = [];
+            // for (let i = 0; i < count; i++) {
+            //     if (!this.fileList[i].checked)
+            //         newFileList.push(this.fileList[i]);
+            // }
+            // this.fileList = newFileList;
 
             // Чтобы лишний раз не лезть на сервер
             // здесь вместо перечитывания надо просто отфильтровать массив оставив только !this.fileList[i].checked
             // хотя лишний раз перечитать надежнее
             // но успевает перечитать до того как все файлы удалятся, такой вот асинхрон
             // А зачем удалять по одному, можно же весь список сразу отправить, да я гений, но не сегодня.
-            this.readDir(this.dirname);
+//            this.readDir(this.dirname);
 
+        },
+
+        deleteFiles(files) {
+            axios({
+                method: 'post',
+                url: '/afm/deleteFiles',
+                data: {
+                    dirname: this.dirname,
+                    files:  JSON.stringify(files)
+//                    type: this.fileList[id].type
+                }
+            })
+            .then(res => {
+                if (res.status === 200) {
+                    if (res.data) {
+//                        alert('> ' + res.data);
+//                        alert('> ' + this.dirname);
+
+                        let newFileList = [];
+                        let count = this.fileList.length;
+                        for (let i = 0; i < count; i++) {
+                            if (!this.fileList[i].checked)
+                                newFileList.push(this.fileList[i]);
+                        }
+                        this.fileList = newFileList;
+
+                        this.inform(res.data);
+//                            alert (file + ' ' + this.fileList[id].name + ' удалён!');
+//                            this.inform(res.data);
+
+                        // удалить запись из массива
+                        //  -- удаление сбивается при удалении нескольких файлов, индексты перестают совпадать
+                        // this.fileList.splice(id, 1);
+                    }
+                    else {
+                        alert ('ПРЕДУПРЕЖДЕНИЕ: Не все файлы удалось удалить!');
+                        this.readDir(this.dirname);
+                    }
+                } else {
+                    alert ('Не удалось удалить файлы, статус = ' + res.status);
+                }
+            })
+            .catch(err => {
+                alert(err);
+            });
         },
 
         deleteFile(id) {
@@ -365,35 +489,32 @@ const Afs = {
                     type: this.fileList[id].type
                 }
             })
-                .then(res => {
-                    if (res.status === 200) {
-                        let file = 'файл';
-                        if (this.fileList[id].type === 'dir') {
-                            file = 'каталог';
-                        }
+            .then(res => {
+                if (res.status === 200) {
+                    let file = 'файл';
+                    if (this.fileList[id].type === 'dir') {
+                        file = 'каталог';
+                    }
 
-                        if (res.data) {
+                    if (res.data) {
 //                            alert (file + ' ' + this.fileList[id].name + ' удалён!');
 //                            this.inform(res.data);
 
-                            // удалить запись из массива
-                            //  -- удаление сбивается при удалении нескольких файлов, индексты перестают совпадать
-                            // this.fileList.splice(id, 1);
-                        }
-                        else {
-                            alert ('Не удалось удалить ' + file + ' ' + this.fileList[id].name);
-                        }
-                    } else {
-                        alert ('Не удалось удалить ' + this.fileList[id].name + ', статус = ' + res.status);
+                        // удалить запись из массива
+                        //  -- удаление сбивается при удалении нескольких файлов, индексты перестают совпадать
+                        // this.fileList.splice(id, 1);
                     }
-                })
-                .catch(err => {
-                    alert(err);
-                });
-
-        }
-
-
+                    else {
+                        alert ('Не удалось удалить ' + file + ' ' + this.fileList[id].name);
+                    }
+                } else {
+                    alert ('Не удалось удалить ' + this.fileList[id].name + ', статус = ' + res.status);
+                }
+            })
+            .catch(err => {
+                alert(err);
+            });
+        },
     }
 };
 
@@ -492,7 +613,7 @@ afs.component('load-files', {
 //                formData.append('files' + i, file);
             }
 
-            axios.post( '/afm/loadFiles',
+            axios.post( '/afm/uploadFiles',
                 formData,
                 {
                     headers: {

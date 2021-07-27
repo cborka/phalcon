@@ -2,35 +2,51 @@
 
 $post =  json_decode(file_get_contents('php://input'), true);
 
-$dir = BASE_PATH . "/../afm" . $_POST["dirname"] . "/";
+$dirname = $post["dirname"];
+$files = json_decode($post["files"]);
 
-//$file = $_FILES['files']['name'][0];
-$file = $_FILES['files'];
+//echo $post["files"];
+//echo count($files);
+//echo $dirname . '<br>';
 
-$count = count($file['name']);
-for ($i=0; $i<$count; $i++) {
-    $fullname = $dir . $file['name'][$i];
-    echo $fullname . '<br>';
-
-    if (!move_uploaded_file($file['tmp_name'][$i], $fullname)) {
-        echo "Не удалось переместить";
-    } else {
-        echo "Файл  {$file['name'][$i]} загружен";
-    }
-
-//    echo $_FILES['files']['name'][$i] . '<br>';
-//    echo $_FILES['files']['size'][$i] . '<br>';
-//    echo $_FILES['files']['tmp_name'][$i] . '<br>';
-}
+$result = true;
+$fullname = BASE_PATH . "/../afm/newdir/2.txt";
+loadFile($fullname);
 
 
-// ob_start();
-//    var_dump($_POST);
-//    var_dump($post);
-//    var_dump($file);
-//    var_dump($_FILES);
-////    echo "jdlskjlkjslkj";
-//$content = ob_get_clean();
+//$count = count($files);
+//for ($i = 0; $i < $count; $i++) {
+//    $fullname = BASE_PATH . "/../afm" . $dirname . '/' . $files[$i];
+//    if (is_dir($fullname)) {
+////        echo $fullname . ' dir<br>';
+////        $result = loadDir($fullname) && $result;
+//    } else {
+////        echo $fullname . ' file<br>';
+//        loadFile($fullname);
+//    }
 //
-//echo $content;
-//var_dump($post["dirname"]);
+//}
+
+function loadFile($file)
+{
+//    echo $file;
+//    echo '---' . basename($file);
+    //return;
+    //http://bc.eopa.ru/storage/load?filename=Pagination.jpg&token=7994c058203cda63aa2bbf3bbc0df7fedcaa1c1b2e05c94a4076e97099cd.xbz
+//    if (!file_exists($file)) {
+//        echo 'Fайл <b>' . $filename . '</b> не существует.';
+//        return;
+//    }
+//
+    header('Content-Description: File Transfer');
+    header('Content-Type: application/octet-stream');
+    header('Content-Disposition: attachment; filename=11' . basename($file));
+    header('Content-Transfer-Encoding: binary');
+    header('Expires: 0');
+    header('Cache-Control: must-revalidate');
+    header('Pragma: public');
+
+    // читаем файл и отправляем его пользователю
+    readfile($file);
+
+}

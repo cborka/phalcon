@@ -1,0 +1,36 @@
+<?php
+
+$post =  json_decode(file_get_contents('php://input'), true);
+
+$dir = BASE_PATH . "/../afm" . $_POST["dirname"] . "/";
+
+//$file = $_FILES['files']['name'][0];
+$file = $_FILES['files'];
+
+$count = count($file['name']);
+for ($i=0; $i<$count; $i++) {
+    $fullname = $dir . $file['name'][$i];
+    echo $fullname . '<br>';
+
+    if (!move_uploaded_file($file['tmp_name'][$i], $fullname)) {
+        echo "Не удалось переместить";
+    } else {
+        echo "Файл  {$file['name'][$i]} загружен";
+    }
+
+//    echo $_FILES['files']['name'][$i] . '<br>';
+//    echo $_FILES['files']['size'][$i] . '<br>';
+//    echo $_FILES['files']['tmp_name'][$i] . '<br>';
+}
+
+
+// ob_start();
+//    var_dump($_POST);
+//    var_dump($post);
+//    var_dump($file);
+//    var_dump($_FILES);
+////    echo "jdlskjlkjslkj";
+//$content = ob_get_clean();
+//
+//echo $content;
+//var_dump($post["dirname"]);
