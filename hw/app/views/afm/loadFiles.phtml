@@ -1,17 +1,37 @@
 <?php
 
-$post =  json_decode(file_get_contents('php://input'), true);
+//var_dump($_GET);
+$fullname = BASE_PATH . "/../afm" . $_GET['dirname'] . '/' . $_GET['files'];
+//$fullname = BASE_PATH . "/../afm" . $_GET['filename'];
+//echo $_GET['_url'] . '?dirname=' .  $_GET['dirname'] . '&files=' . $_GET['files'] . '&flag=' . $_GET['flag'];
+//echo '<br>';
 
-$dirname = $post["dirname"];
-$files = json_decode($post["files"]);
-
-//echo $post["files"];
-//echo count($files);
-//echo $dirname . '<br>';
-
-$result = true;
-$fullname = BASE_PATH . "/../afm/newdir/2.txt";
+//if ($_GET['flag'] === '1') {
+//    $ref = 'Location: ' . $_GET['_url'] . '?dirname=' .  $_GET['dirname'] . '&files=' . $_GET['files'] . '&flag=0';
+//    echo $ref;
+//    header ($ref);
+//}
 loadFile($fullname);
+//echo $fullname;
+
+//header ('Location: ajax.php');
+
+
+//echo $fullname;
+//loadFile($fullname);
+
+//$post =  json_decode(file_get_contents('php://input'), true);
+//
+//$dirname = $post["dirname"];
+//$files = json_decode($post["files"]);
+//
+////echo $post["files"];
+////echo count($files);
+////echo $dirname . '<br>';
+//
+//$result = true;
+//$fullname = BASE_PATH . "/../afm/newdir/2.txt";
+//loadFile($fullname);
 
 
 //$count = count($files);

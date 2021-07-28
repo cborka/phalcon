@@ -74,7 +74,7 @@ const Afs = {
                 <div class="box"  style="padding: 0 12px 0 0px; margin: 0 12px 0 12px; background-color: hsl(0, 0%, 96%)" >
                     <folder  @opendir="openDir"
                         v-for="file in fileList"
-                        v-bind:file="file"
+                            :file="file"
                     >
                     </folder>
                 </div>
@@ -110,10 +110,12 @@ const Afs = {
                      
                         <content
                             v-for="file in fileList"
+                                :dirname="dirname"
                                 :file="file"
                                 :key="file.id"
                         >
                         </content>
+                                <!--url="/afm/image?dirname=/newdir&file=homo.bmp"-->
                    
                 </div>
 
@@ -143,11 +145,13 @@ const Afs = {
                     </div>
                 </div>
 
+                <!-- Вывод служебных сообщений, пока отключено -->
                 <div class="level-left " style=" padding: 12px 12px 12px 24px; border-bottom: hsl(0, 0%, 86%) 1px solid; ">
                      <div class="level-item ">
                         <!--<textarea v-html="info" cols=35 >-->
                         <!--</textarea>-->
-                        <p v-html="info"></p>
+
+                        <!--<p v-html="info"></p>-->
                     </div>
                 </div>
 
@@ -321,21 +325,55 @@ const Afs = {
 
         // Скачать выделенные файлы и каталоги
         loadChecked() {
-            let files = [];
-            let s = '';
-            let count = this.fileList.length;
+//            let files = [];
+            let files = '';
+            let file_count = 0;
+            let url = '';
 
             // Собираю в массив имена файлов, которые надо скачать
+            let count = this.fileList.length;
             for (let i = 0; i < count; i++) {
                 if (! this.fileList[i].checked) {
                     continue;
                 }
-                files.push(this.fileList[i].name);
+                if (this.fileList[i].type === 'dir') {
+                    continue;
+                }
+
+//                files = files + this.fileList[i].name + ';';
+//                file_count++;
+
+                url = '/afm/loadFiles?dirname='+this.dirname+'&files='+this.fileList[i].name;
+                setTimeout(this.loadFile, 500*i, url, i);
+
+
+                // let url = '/afm/loadFiles?filename='+this.dirname+'/'+this.fileList[i].name+'&flag='+count;
+                // window.open(url, '_blank');
+
+                //http://bc.eopa.ru/storage/load?filename=Орочан.jpg&token=d86d7b3ec2ae5a57cf0e3caeb5f1fcdc0de82f0e0a115bb29e63741d33df.xbz
+//                files.push(this.fileList[i].name);
+//                location.href = '/afm/loadFiles?filename='+this.dirname+'/'+this.fileList[i].name;
+//                alert('/afm/loadFiles?filename='+this.dirname+'/'+this.fileList[i].name);
             }
 
-            location.href = '/afm/loadFiles';
+//            let url = '/afm/loadFiles?dirname='+this.dirname+'&files='+files+'&flag='+file_count;
+
+            // url = '/afm/loadFiles?dirname='+this.dirname+'&files='+files+'&flag=1';
+            // setTimeout(this.loadFile, 1000, url);
+            // url = '/afm/loadFiles?dirname='+this.dirname+'&files='+files+'&flag=2';
+            // setTimeout(this.loadFile, 1500, url);
+
+//            window.open(url, '_blank');
+//            window.open(url, '_blank');
 
 //            this.loadFiles(files);
+        },
+        loadFile(url, i) {
+            this.fileList[i].checked = false;
+            location.href = url;
+//            location.href = url;
+                //window.open(url);
+//            window.open(url, '_blank');
         },
         loadFiles(files) {
             axios({
@@ -639,21 +677,31 @@ afs.component('load-files', {
 
 // Контент выделенных файлов
 afs.component('content', {
-    props: ['file'],
+    props: ['dirname', 'file'],
     template: `
     
             <div v-if="file.checked" class="">
 
-                         {{file.name }}   
-
+                     =>    {{ dirname + '/' + file.name + '=' + urll  }}   
+                    <img class="preview" :src="urll">
+                    <!--<img class="preview" src="/afm/image?dirname={{dirname}}&files={{file}}">-->
+                    <!--<img class="preview" src="/afm/image?dirname=/newdir&file=homo.bmp">-->
             </div>
 
     `
-//    ,
-//     data() {
-//         return {
-//         }
-//     }
+//    /afm/image?dirname=/newdir&file=homo.bmp
+//    /afm/image?dirname='+this.dirname+'&files='+this.fileList[i].name
+   ,
+    data() {
+        return {
+            urll: ''
+        }
+    },
+    mounted() {
+        this.urll = '/afm/image?dirname='+this.dirname+'&file='+this.file.name ;
+//        this.urll = '/afm/image?dirname=/newdir&file=homo.bmp' ;
+//        this.urll = this.url;
+    }
 });
 
 

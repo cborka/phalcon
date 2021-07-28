@@ -74,5 +74,15 @@ class AfmController extends Controller
         );
     }
 
+    /*
+     * Картинка
+     */
+    public function imageAction()
+    {
+        $this->view->setRenderLevel(
+            View::LEVEL_ACTION_VIEW
+        );
+    }
+
 
 }
