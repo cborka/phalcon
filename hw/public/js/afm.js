@@ -106,8 +106,32 @@ const Afs = {
             <div class="column rightcol">
 
 
-                <div class="" style=" margin: 52px 12px 0 12px; xmargin-top: 52px; padding-bottom: 12px; border-bottom: hsl(0, 0%, 86%) 1px solid; ">
+                <!--<div class="level" style=" margin: 52px 12px 0 12px; xmargin-top: 52px; padding-bottom: 12px; border-bottom: hsl(0, 0%, 86%) 1px solid; ">-->
                      
+                        <!--<content-->
+                            <!--v-for="file in fileList"-->
+                                <!--:dirname="dirname"-->
+                                <!--:file="file"-->
+                                <!--:key="file.id"-->
+                        <!--&gt;-->
+                        <!--</content>-->
+                                <!--url="/afm/image?dirname=/newdir&file=homo.bmp"-->
+                   
+                <!--</div>-->
+
+
+                <div class="level-left " style=" padding: 8px 12px 8px 24px; border-bottom: hsl(0, 0%, 86%) 1px solid; ">
+                     <div class="level-item ">
+                        Содержимое
+                    </div>
+                </div>
+
+
+                <div class="level" style="padding-top: 32px; padding-bottom: 16px;  margin: 0px; border-bottom: hsl(0, 0%, 86%) 1px solid; ">
+
+                     <div class="block " style="margin-top: 0px; margin-left: 12px; border: yellow 0px solid; ">
+                    <!--<div class="box" style=" border: red 1px solid; ">-->
+                    
                         <content
                             v-for="file in fileList"
                                 :dirname="dirname"
@@ -115,27 +139,40 @@ const Afs = {
                                 :key="file.id"
                         >
                         </content>
-                                <!--url="/afm/image?dirname=/newdir&file=homo.bmp"-->
-                   
-                </div>
-
-                <div class="level" style="padding-bottom: 16px;  margin: 0px; border-bottom: hsl(0, 0%, 86%) 1px solid; ">
-
-                     <div class="block " style="margin-top: 0px; margin-left: 12px; border: red 0px solid; ">
-                    <!--<div class="box" style=" border: red 1px solid; ">-->
+ 
                     
-                    <!--<figure class="image " style="display: inline-block; margin: 8px; border: navy 0px solid; width: 43%">-->
+                    
+                    
+                    <!--<div class="ximage " style="display: inline-block; margin: 8px; border: navy 1px solid; width: 43%; height: 70px; overflow: hidden">-->
+                        <!--lkjlkj aljlaksd  alsdjlakdj  aljsdlajsd  alsdjlasjd  alskjdlasjd  alsjdlajsd  -->
+                        <!--lkjlkj aljlaksd  alsdjlakdj  aljsdlajsd  alsdjlasjd  alskjdlasjd  alsjdlajsd  -->
+                    <!--</div>-->
+
+                    <!--<div class="ximage " style="display: inline-block; margin: 8px; border: navy 1px solid; width: 43%; height: 70px; overflow: hidden">-->
+                    <!--<figure  class="image" -->
+                        <!--style="-->
+                            <!--/*display: inline-block; */-->
+                            <!--/*margin: 8px; */-->
+                            <!--/*border: navy 1px solid;  */-->
+                            <!--/*width: 43%; */-->
+                            <!--/*height: 70px; */-->
+                            <!--/*overflow: hidden;*/-->
+                            <!--text-align: center;-->
+                            <!--vertical-align: bottom;-->
+                            <!--/*position: relative;*/-->
+                        <!--">-->
+                            <!--<img src="/img/logo-earth.jpg" style="border: red 1px solid; vert-align: bottom;">-->
+                    <!--</figure>-->
+                    <!--</div>-->
+
+                       <!--&lt;!&ndash;<div style="border: magenta 1px solid; vertical-align: middle; "> &ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                         <!---->
+                    <!--<figure class="image " style="display: inline-block; margin: 8px; border: navy 1px solid; width: 43%; height: 70px; overflow: hidden ">-->
                         <!--<img src="/img/logo-earth.jpg" >-->
                     <!--</figure>-->
-                         <!---->
-                    <!--<figure class="image " style="display: inline-block; margin: 8px; border: navy 0px solid;  width: 43%">-->
-                        <!--<img src="/img/logo-earth.jpg">-->
-                    <!--</figure>-->
-                         <!---->
-                    <!--<figure class="image " style="display: inline-block; margin: 8px; border: navy 0px solid; width: 43%">-->
-                        <!--<img src="/img/logo-earth.jpg" >-->
-                    <!--</figure>-->
-                         <!---->
+                    
+                    
                     </div>
                 </div>
                 
@@ -572,7 +609,8 @@ afs.component('folder', {
                     <label for="checkbox" class="checkbox">{{}}</label>
 
                     <p  class="level-item" @dblclick.stop="$emit('opendir', file.name, file.type)">
-                         {{file.name}}  
+                         {{file.id+','+file.name}}  
+                         <!--// [{id: 0, name: "filename", size: 123, type: "txt", checked: true},  ...]-->
                     </p>
                 </div>
                 
@@ -680,13 +718,25 @@ afs.component('content', {
     props: ['dirname', 'file'],
     template: `
     
-            <div v-if="file.checked" class="">
+            <!--<div v-if="file.checked" class="">-->
+                <div v-if="file.checked" class="ximage " 
+                    style="
+                        display: inline-block; 
+                        margin: 8px; 
+                        border: navy 0px solid; 
+                        width: 43%; 
+                        height: 70px; 
+                        overflow: hidden
+                    "
+                >
 
-                     =>    {{ dirname + '/' + file.name + '=' + urll  }}   
-                    <img class="preview" :src="urll">
+                     <!--=>    {{  file.id + ', ' + dirname + '/' + file.name + '=' + urll  }}   -->
+                    <img class="preview" :src="urll" :title="file.name">
+                    
                     <!--<img class="preview" src="/afm/image?dirname={{dirname}}&files={{file}}">-->
                     <!--<img class="preview" src="/afm/image?dirname=/newdir&file=homo.bmp">-->
-            </div>
+                </div>
+            <!--</div>-->
 
     `
 //    /afm/image?dirname=/newdir&file=homo.bmp
@@ -694,14 +744,22 @@ afs.component('content', {
    ,
     data() {
         return {
-            urll: ''
+//            urll: ''
         }
     },
     mounted() {
-        this.urll = '/afm/image?dirname='+this.dirname+'&file='+this.file.name ;
+//        this.urll = '/afm/image?dirname='+this.dirname+'&file='+this.file.name ;
 //        this.urll = '/afm/image?dirname=/newdir&file=homo.bmp' ;
 //        this.urll = this.url;
+    },
+    computed: {
+        urll() {
+            return '/afm/image?dirname='+this.dirname+'&file='+this.file.name;
+        }
+    },
+    methods: {
     }
+
 });
 
 
