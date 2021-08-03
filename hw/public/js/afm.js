@@ -127,9 +127,19 @@ const Afs = {
                 </div>
 
 
-                <div class="level" style="padding-top: 32px; padding-bottom: 16px;  margin: 0px; border-bottom: hsl(0, 0%, 86%) 1px solid; ">
+                <div class="level" style="padding-top: 32px; padding-bottom: 16px;  margin: 0px;  border: greenyellow 0px solid; border-bottom: hsl(0, 0%, 86%) 1px solid; ">
 
-                     <div class="block " style="margin-top: 0px; margin-left: 12px; border: yellow 0px solid; ">
+                    <div class="block " 
+                        style="
+                            margin-top: 0px; 
+                            margin-left: 0px; 
+                            width: 100%; 
+                            border: palegreen 0px solid; 
+                            
+                            display: flex;
+                            flex-wrap: wrap;
+                        "
+                    >
                     <!--<div class="box" style=" border: red 1px solid; ">-->
                     
                         <content
@@ -722,16 +732,30 @@ afs.component('content', {
                 <div v-if="file.checked" class="ximage " 
                     style="
                         display: inline-block; 
-                        margin: 8px; 
-                        border: navy 0px solid; 
-                        width: 43%; 
+                        xmargin: 4px; 
+                        margin: 0%; 
+                        padding: 2px; 
+                        border: hsl(0, 0%, 86%) 1px solid; 
+                        width: 50%; 
+                        xwidth: 132px; 
                         height: 70px; 
-                        overflow: hidden
+                        overflow: hidden;
+                        display: flex;
+                        align-items: center;
+                        align-content: center;
+                        justify-content: center;
+
                     "
                 >
 
                      <!--=>    {{  file.id + ', ' + dirname + '/' + file.name + '=' + urll  }}   -->
-                    <img class="preview" :src="urll" :title="file.name">
+                    <img class="ximage" :src="urll" :title="file.name" 
+                        style="
+                            xalign-content: center;
+                            xobject-fit: cover;
+                    
+                        "
+                    >
                     
                     <!--<img class="preview" src="/afm/image?dirname={{dirname}}&files={{file}}">-->
                     <!--<img class="preview" src="/afm/image?dirname=/newdir&file=homo.bmp">-->
