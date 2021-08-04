@@ -377,7 +377,7 @@ const Afs = {
             let file_count = 0;
             let url = '';
 
-            // Собираю в массив имена файлов, которые надо скачать
+            //
             let count = this.fileList.length;
             for (let i = 0; i < count; i++) {
                 if (! this.fileList[i].checked) {
@@ -422,6 +422,10 @@ const Afs = {
                 //window.open(url);
 //            window.open(url, '_blank');
         },
+
+        // Эта функция уже не нужна
+        // Вместо неё loadChecked()
+        /*
         loadFiles(files) {
             axios({
                 method: 'post',
@@ -459,6 +463,7 @@ const Afs = {
                     alert(err);
                 });
         },
+        */
 
         // Удалить выделенные файлы и каталоги
         deleteChecked() {
@@ -565,6 +570,9 @@ const Afs = {
             });
         },
 
+        // Сначала хотел удалять файлы по одному.
+        // Эта функция сейчас не нужна
+        /*
         deleteFile(id) {
             axios({
                 method: 'post',
@@ -600,6 +608,7 @@ const Afs = {
                 alert(err);
             });
         },
+        */
     }
 };
 
@@ -619,7 +628,8 @@ afs.component('folder', {
                     <label for="checkbox" class="checkbox">{{}}</label>
 
                     <p  class="level-item" @dblclick.stop="$emit('opendir', file.name, file.type)">
-                         {{file.id+','+file.name}}  
+                         {{file.name}}  
+                         <!--{{file.id+','+file.name}}  -->
                          <!--// [{id: 0, name: "filename", size: 123, type: "txt", checked: true},  ...]-->
                     </p>
                 </div>
@@ -729,7 +739,9 @@ afs.component('content', {
     template: `
     
             <!--<div v-if="file.checked" class="">-->
-                <div v-if="file.checked" class="ximage " 
+            
+            
+                <div v-if="file.checked && is_image" class="ximage " 
                     style="
                         display: inline-block; 
                         xmargin: 4px; 
@@ -741,26 +753,50 @@ afs.component('content', {
                         height: 70px; 
                         overflow: hidden;
                         display: flex;
-                        align-items: center;
-                        align-content: center;
                         justify-content: center;
+                        
+                        xalign-content: center;
+                        xalign-items: center;
+                        xjustify-content: center;
 
                     "
                 >
-
+ 
                      <!--=>    {{  file.id + ', ' + dirname + '/' + file.name + '=' + urll  }}   -->
-                    <img class="ximage" :src="urll" :title="file.name" 
+                    <img  class="image" :src="urll" :title="file.name" 
                         style="
-                            xalign-content: center;
-                            xobject-fit: cover;
-                    
                         "
                     >
-                    
                     <!--<img class="preview" src="/afm/image?dirname={{dirname}}&files={{file}}">-->
                     <!--<img class="preview" src="/afm/image?dirname=/newdir&file=homo.bmp">-->
                 </div>
             <!--</div>-->
+
+                <div v-if="file.checked && is_text" class="ximage " 
+                    style="
+                        display: inline-block; 
+                        margin: 0%; 
+                        padding: 2px; 
+                        border: hsl(0, 0%, 86%) 1px solid; 
+                        width: 50%; 
+                        height: 70px; 
+                        overflow: hidden;
+                        display: flex;
+                        justify-content: left;
+                    "
+                >
+                    <p 
+                        style="
+                        display: flex;
+                            text-align: left;
+                        "                    
+                    >
+                        <!--{{textt}}-->
+                        {{text2}}
+                    </p>
+                </div>
+
+
 
     `
 //    /afm/image?dirname=/newdir&file=homo.bmp
@@ -769,19 +805,91 @@ afs.component('content', {
     data() {
         return {
 //            urll: ''
+            text2: ''
         }
     },
     mounted() {
 //        this.urll = '/afm/image?dirname='+this.dirname+'&file='+this.file.name ;
 //        this.urll = '/afm/image?dirname=/newdir&file=homo.bmp' ;
 //        this.urll = this.url;
+//        return 'file='+this.file.name;
     },
     computed: {
         urll() {
             return '/afm/image?dirname='+this.dirname+'&file='+this.file.name;
-        }
+        },
+//         textt() {
+//             axios({
+//                 method: 'post',
+//                 url: '/afm/image?dirname='+this.dirname+'&file='+this.file.name,
+//                 data: {
+// //                    dirname: dir
+//                 }
+//             })
+//                 .then(res => {
+//                     if (res.status === 200) {
+// //                        alert(res.data);
+//                         this.text2 = res.data;
+//                         return res.data;
+//                     } else {
+//                         alert (res.data);
+//                     }
+//                 })
+//                 .catch(err => {
+//                     alert(err);
+//                 });
+//             return 'file='+this.file.name;
+//         },
+        is_text() {
+            switch (this.file.type.toLowerCase()) {
+                case 'bat':
+                case 'txt':
+                case 'php':
+                case 'css':
+                case 'js':
+                case 'sql':
+                    this.getText();
+                    return true;
+                break;
+                default:
+                    return false;
+            }
+        },
+        is_image() {
+            switch (this.file.type.toLowerCase()) {
+                case 'jpg':
+                case 'png':
+                case 'gif':
+                case 'bmp':
+                    return true;
+                break;
+                default:
+                    return false;
+            }
+        },
+
     },
     methods: {
+        getText() {
+            axios({
+                method: 'post',
+                url: '/afm/image?dirname='+this.dirname+'&file='+this.file.name,
+                data: {
+//                    dirname: dir
+                }
+            })
+                .then(res => {
+                    if (res.status === 200) {
+                        this.text2 = res.data;
+                    } else {
+                        alert (res.data);
+                    }
+                })
+                .catch(err => {
+                    alert(err);
+                });
+        }
+
     }
 
 });
