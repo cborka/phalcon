@@ -127,13 +127,21 @@ const Afs = {
                 </div>
 
 
-                <div class="level" style="padding-top: 32px; padding-bottom: 16px;  margin: 0px;  border: greenyellow 0px solid; border-bottom: hsl(0, 0%, 86%) 1px solid; ">
+                <div class="level" 
+                    style="
+                        padding-top: 32px; 
+                        padding-bottom: 16px;  
+                        margin: 0px;  
+                        border: greenyellow 0px solid; 
+                        border-bottom: hsl(0, 0%, 86%) 1px solid; 
+                    "
+                >
 
                     <div class="block " 
                         style="
                             margin-top: 0px; 
                             margin-left: 0px; 
-                            width: 100%; 
+                            xwidth: 100%; 
                             border: palegreen 0px solid; 
                             
                             display: flex;
@@ -772,28 +780,39 @@ afs.component('content', {
                 </div>
             <!--</div>-->
 
-                <div v-if="file.checked && is_text" class="ximage " 
+                <div v-if="file.checked && is_text" class="" 
                     style="
                         display: inline-block; 
                         margin: 0%; 
                         padding: 2px; 
                         border: hsl(0, 0%, 86%) 1px solid; 
                         width: 50%; 
+                        xwidth: 150px;
                         height: 70px; 
                         overflow: hidden;
                         display: flex;
                         justify-content: left;
+xwhite-space: pre;
+                        /*font-size: xx-small;*/
+                        /*font-family: Courier;*/
+                        /*line-height: 1em;*/
+                        /*white-space: pre;*/
+
                     "
                 >
-                    <p 
+                
+                    <div 
                         style="
-                        display: flex;
-                            text-align: left;
+                            font-size: xx-small;
+                            font-family: Courier;
+                            line-height: 1em;
+                            white-space: pre;
+                            
                         "                    
                     >
                         <!--{{textt}}-->
                         {{text2}}
-                    </p>
+                    </div>
                 </div>
 
 
