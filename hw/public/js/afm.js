@@ -45,7 +45,7 @@ const Afs = {
                         v-for="dir in dirs"
                          :dir="dir"
                          :key="dir.id"
-                         style="margin: 0; padding: 0;"
+                         style="margin: 0; padding: 0;" 
                     ></breadc>
 
                    <!--</ul>-->
