@@ -27,10 +27,16 @@ const Afs = {
     
         <div class="columns" style="margin: 0; height: 600px; ">
             <!--<div class="column is-two-thirds lefttcol">-->
-            <div class="column is-two-thirds lefttcol">
+            <div class="column is-two-thirds lefttcol" 
+                style="
+                    #overflow: scroll;
+                    /* resize не работает без overflow: scroll, а оно не нужно */
+                    resize: both; 
+                "
+            >
       
-               <!---------------------- Полное имя папки ----------------------->
-               <div class="level" style="padding-left: 12px; border-bottom: hsl(0, 0%, 86%) 1px solid; ">
+                <!---------------------- Полное имя папки ----------------------->
+                <div class="level" style="padding-left: 12px; border-bottom: hsl(0, 0%, 86%) 1px solid; ">
                    <div class="level-left">
                    <!--<nav class="breadcrumb" aria-label="breadcrumbs">-->
                    <!--<ul>-->
@@ -53,13 +59,13 @@ const Afs = {
                         padding: 12px; 
                         padding-bottom: 0;  
                         margin-bottom: 12px;
-                        "
+                    "
                 >
-                   <div class="level-left" >
+                    <div class="level-left" >
                         <button class="button" disabled>Фильтр по файлам</button>
-                   </div>
+                     </div>
 
-                   <div class="level-right" >
+                    <div class="level-right" >
                         <div class="buttons">
                             <button class="button is-primary is-light" @click="newDir">Создать папку</button>
                             <!--<button class="button is-primary is-light">Загрузить</button>-->
@@ -67,11 +73,20 @@ const Afs = {
                             <load-files :dirname="dirname" :inform="inform" :readDir="readDir"></load-files>
                             
                         </div>
-                   </div>
+                    </div>
                 </div>
                 
                 <!---------------------- Список файлов в папке ----------------------->
-                <div class="box"  style="padding: 0 12px 0 0px; margin: 0 12px 0 12px; background-color: hsl(0, 0%, 96%)" >
+                <div class="box" 
+                    style="
+                        padding: 0 12px 0 0px; 
+                        margin: 0 12px 0 12px; 
+                        background-color: hsl(0, 0%, 96%); 
+                        height: 66%;
+                        overflow: scroll; 
+                        xresize: both
+                    " 
+                >
                     <folder  @opendir="openDir"
                         v-for="file in fileList"
                             :file="file"
@@ -103,7 +118,7 @@ const Afs = {
             </div>
             
             <!---------------------- Правая колонка где показано содержимое выделенных файлов ----------------------->
-            <div class="column rightcol">
+            <div class="column rightcol" style="xoverflow: scroll; resize: both">
 
 
                 <!--<div class="level" style=" margin: 52px 12px 0 12px; xmargin-top: 52px; padding-bottom: 12px; border-bottom: hsl(0, 0%, 86%) 1px solid; ">-->
@@ -806,7 +821,7 @@ xwhite-space: pre;
                             font-size: xx-small;
                             font-family: Courier;
                             line-height: 1em;
-                            white-space: pre;
+                            xwhite-space: pre;
                             
                         "                    
                     >
