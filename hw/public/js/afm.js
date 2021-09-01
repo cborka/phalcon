@@ -795,7 +795,7 @@ afs.component('content', {
                 </div>
             <!--</div>-->
 
-                <div v-if="file.checked && is_text" class="" 
+                <div v-if="file.checked && is_text" class=""  
                     style="
                         display: inline-block; 
                         margin: 0%; 
